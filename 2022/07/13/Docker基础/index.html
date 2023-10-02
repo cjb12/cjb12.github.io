@@ -13,13 +13,13 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Docker官网：https:&#x2F;&#x2F;www.docker.com 文档：https:&#x2F;&#x2F;docs.docker.com 仓库地址：https:&#x2F;&#x2F;hub.docker.com 系统内核 1uname -r     #3.10以上  系统版本 1cat &#x2F;etc&#x2F;os-release  安装（CentOS） https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;install&#x2F;centos&#x2F;">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021402119.png">
-<meta property="og:image" content="http://example.com/https://raw.githubusercontent.com/cjb12/Pics/master/202310021403362.png">
+<meta property="og:image" content="http://example.com/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021447165.png">
+<meta property="og:image" content="http://example.com/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021447437.png">
 <meta property="article:published_time" content="2022-07-13T08:01:04.000Z">
-<meta property="article:modified_time" content="2023-10-02T06:04:07.460Z">
+<meta property="article:modified_time" content="2023-10-02T06:48:11.615Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021402119.png">
+<meta name="twitter:image" content="http://example.com/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021447165.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -261,7 +261,7 @@
 <p>自定义一个网络</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet</span><br><span class="line">--driver bridge          #指定bridge驱动程序来管理网络</span><br><span class="line">--subnet 192.168.0.0/16  #指定网段的CIDR格式的子网</span><br><span class="line">--gateway 192.168.0.1 	 #指定主子网的IPv4或IPv6网关</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021402119.png" alt="image-20231002135502268"></p>
+<p><img src="/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021447165.png" alt="image-20231002144713038"></p>
 <p>网络mynet创建成功后，查看网络信息：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect mynet</span><br></pre></td></tr></table></figure>
 
@@ -270,7 +270,7 @@
 
 <p>在我们的自定义网络下，容器之间既可以通过容器名也可以通过ip地址进行网络通信。 我们自定义的网络默认已经帮我们维护了容器间的网络通信问题，这是实现网络互联的推荐方式。</p>
 <h3 id="网络之间的互联"><a href="#网络之间的互联" class="headerlink" title="网络之间的互联"></a>网络之间的互联</h3><p>没有设置的情况下，不同网络间的容器是无法进行网络连接的。如图，两个不同的网络docker0和自定义网络mynet的网络模型图：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021403362.png" alt="image-20231002140311303"></p>
+<p><img src="/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021447437.png" alt="image-20231002144749373"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network connect mynet tomcat-01</span><br></pre></td></tr></table></figure>
 
 <p>设置完成后我们就可以实现不同网络之间的容器互联了。</p>
