@@ -472,7 +472,7 @@
 <p>自定义一个网络</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet</span><br><span class="line">--driver bridge          #指定bridge驱动程序来管理网络</span><br><span class="line">--subnet 192.168.0.0/16  #指定网段的CIDR格式的子网</span><br><span class="line">--gateway 192.168.0.1 	 #指定主子网的IPv4或IPv6网关</span><br></pre></td></tr></table></figure>
 
-<p><img src="/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021447165.png" alt="image-20231002144713038"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021447165.png"></p>
 <p>网络mynet创建成功后，查看网络信息：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect mynet</span><br></pre></td></tr></table></figure>
 
@@ -481,7 +481,7 @@
 
 <p>在我们的自定义网络下，容器之间既可以通过容器名也可以通过ip地址进行网络通信。 我们自定义的网络默认已经帮我们维护了容器间的网络通信问题，这是实现网络互联的推荐方式。</p>
 <h3 id="网络之间的互联"><a href="#网络之间的互联" class="headerlink" title="网络之间的互联"></a>网络之间的互联</h3><p>没有设置的情况下，不同网络间的容器是无法进行网络连接的。如图，两个不同的网络docker0和自定义网络mynet的网络模型图：</p>
-<p><img src="/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021447437.png" alt="image-20231002144749373"></p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021447437.png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network connect mynet tomcat-01</span><br></pre></td></tr></table></figure>
 
 <p>设置完成后我们就可以实现不同网络之间的容器互联了。</p>
@@ -689,7 +689,7 @@
 <li>要有可用的魔术方法作为“跳板”。</li>
 <li>文件操作函数的参数可控，且<code>:</code>、<code>/</code>、<code>phar</code>等特殊字符没有被过滤。</li>
 </ol>
-<h3 id="受影响的函数"><a href="#受影响的函数" class="headerlink" title="受影响的函数"></a>受影响的函数</h3><p><img src="/https%253A%252F%252Fraw.githubusercontent.com%252Fcjb12%252FPics%252Fmaster%252F202310021449095.png" alt="image-20231002144901043"></p>
+<h3 id="受影响的函数"><a href="#受影响的函数" class="headerlink" title="受影响的函数"></a>受影响的函数</h3><p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310021449095.png"></p>
 <p><a target="_blank" rel="noopener" href="https://blog.zsxsoft.com/post/38">https://blog.zsxsoft.com/post/38</a></p>
 <h3 id="绕过方式"><a href="#绕过方式" class="headerlink" title="绕过方式"></a>绕过方式</h3><p>当环境限制了phar不能出现在前面的字符里。可以使用<code>compress.bzip2://</code>和<code>compress.zlib://</code>等绕过</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">compress.bzip://phar:///test.phar/test.txt</span><br><span class="line">compress.bzip2://phar:///test.phar/test.txt</span><br><span class="line">compress.zlib://phar:///home/sx/test.phar/test.txt</span><br><span class="line">php://filter/resource=phar:///test.phar/test.txt</span><br></pre></td></tr></table></figure>
