@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Hexo
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            内网渗透之内网协议
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h1 id="Windows认证"><a href="#Windows认证" class="headerlink" title="Windows认证"></a>Windows认证</h1><p>windows密码存放于%SystemRoot%\system32\config\sam（C:\Windows\System32\config\sam）</p>
+<p>当登录系统时，系统会读取sam文件中的密与用户输入的密码进行比对，如果相同，认证成功</p>
+<p>Windows本身不存储用户的明文密码</p>
+<h2 id="NTLM-Hash"><a href="#NTLM-Hash" class="headerlink" title="NTLM Hash"></a>NTLM Hash</h2><p>NT LAN Manager Hash，NTLM Hash是支持Net NTLM认证协议以及本地认证过程中的一个重要参与物，其长度为32位，由数字和字母组成。</p>
+<p>当用户登录时，将用户输入的明文密码也加密成NTLM Hash，与sam数据库中的NTLM Hash进行比较。NTLM Hash的前身是LM Hash(已经淘汰，加密缺陷，易破解)</p>
+<h2 id="本地认证流程"><a href="#本地认证流程" class="headerlink" title="本地认证流程"></a>本地认证流程</h2><p>Windows Logon Process（winlogon.exe）是Windows NT用户登录程序，用户管理用户登录和退出</p>
+<p>lsass用于微软Windows系统的安全机制，用于本地安全和登录策略</p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310061002352.png" alt="image-20231006100228278"></p>
+<h2 id="Windows网络认证"><a href="#Windows网络认证" class="headerlink" title="Windows网络认证"></a>Windows网络认证</h2><p>在内网渗透中，经常会遇到工作组环境，工作组环境是一个逻辑上的网络环境</p>
+<p>假设A主机与B主机属于同一个工作组环境，A访问B上的资源，需要将一个存在与B主机上的账户凭证发送至B主机，经过认证才能访问B主机资源</p>
+<p>常见的服务：SMB服务 端口：445</p>
+<h2 id="NTLM协议"><a href="#NTLM协议" class="headerlink" title="NTLM协议"></a>NTLM协议</h2><p>挑战（Challenge）&#x2F;  响应（Response）</p>
+<p>第一步：协商</p>
+<p>客户端主要在这一步向服务器确认协议的版本，是v1还是v2，当然不止这一点</p>
+<p>第二步：质询</p>
+<ul>
+<li><p>客户端向服务端发送用户信息（用户名）</p>
+</li>
+<li><p>服务端接收到请求，生成一个16位随机数，称为“Challenge”，使用登录用户名对应的NTLM Hash加密Challenge，生成Challenge1。生成后，将Challenge发送给客户端</p>
+<p>Net NTLM Hash &#x3D; NTLM Hash(Challenge)</p>
+</li>
+<li><p>客户端收到Challenge后，使用将要登录到账户对应的NTLM Hash加密Challenge生成Response，发送到服务端</p>
+</li>
+</ul>
+<p>第三步：验证</p>
+<p>服务器收到Response后，对比Challenge1和Response，若相等，认证通过</p>
+<p><img src="https://raw.githubusercontent.com/cjb12/Pics/master/202310061047751.png" alt="image-20231006104710711"></p>
+<h2 id="NTLM-v2协议"><a href="#NTLM-v2协议" class="headerlink" title="NTLM v2协议"></a>NTLM v2协议</h2><ul>
+<li>NTLM v1 和 NTLM v2最显著的区别就是Challenge与加密算法不同，共同点是加密原料都是NTLM Hash</li>
+<li>Challenge：NTLM v1的Challenge有8位，NTLM v2的Challenge为16位。</li>
+<li>Net-NTLM Hash：NTLM v1 的主要加密算法是DES，NTLM v2 的主要加密算法是HMAC-MD5</li>
+</ul>
+<h2 id="Pass-The-Hash（哈希传递）"><a href="#Pass-The-Hash（哈希传递）" class="headerlink" title="Pass The Hash（哈希传递）"></a>Pass The Hash（哈希传递）</h2><p>哈希传递能够在不需要账户明文密码的情况下完成认证</p>
+<p>必要条件：</p>
+<ul>
+<li>需要被认证的主机能够访问服务器</li>
+<li>需要被传递认证的用户名</li>
+<li>需要被传递认证用户的NTLM Hash</li>
+</ul>
+<p>工具：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ShawnDEvans/smbmap">Smbmap</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/byt3bl33d3r/CrackMapExec/">CrackMapExec</a></li>
+<li>Smbexec</li>
+<li>Metasploit</li>
+</ul>
+
+    </div>
+
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>-<a class="flink" target="_blank" rel="noopener" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
